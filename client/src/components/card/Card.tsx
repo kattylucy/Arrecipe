@@ -22,7 +22,6 @@ const kebabItems = [
 const CardContainer = styled.div(({ theme: { colors } }) => ({
   borderRadius: 16,
   margin: "18px 0px 0px 18px",
-  width: "31%",
 }));
 
 const Thumbnail = styled.img({
