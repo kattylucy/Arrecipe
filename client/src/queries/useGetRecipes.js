@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getRequest} from "../utilities/request";
+import { request } from "../utilities/request";
 
 const transformData = (recipes) =>
   recipes.map((recipe) => ({
@@ -12,13 +12,20 @@ const transformData = (recipes) =>
     updatedAt: recipe.updated_at,
   }));
 
-const fetchData = () => {
-  return getRequest('recipes').then(data => transformData(data.data));
-}
-
+const fetchData = async () => {
+  try {
+    const data = await request("GET", "/recipes");
+    return transformData(data);
+  } catch (error) {
+    console.log(error);
+    // Handle error
+  }
+};
 
 const useGetRecipes = (options) =>
   useQuery("recipes", fetchData, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     ...options,
   });
 

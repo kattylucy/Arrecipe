@@ -23,12 +23,13 @@ def get_all():
 
 @recipe.post('/create')
 def create():
-    calories_count = request.json['calories_count']
-    cooking_time = request.json['cooking_time']
-    name = request.json['name']
-    tag_name = request.json['tag']
-    thumbnail = request.files['thumbnail']
-    url = request.json['url']
+    data = request.get_json()
+    calories_count = data['calories_count']
+    cooking_time = data['cooking_time']
+    name = data['name']
+    tag_name = data['tag']
+    thumbnail = data['thumbnail']
+    url = data['url']
 
     # Validate the thumbnail file extension
     if thumbnail.filename.split('.')[-1].lower() != 'jpg':

@@ -1,9 +1,17 @@
 import { useMutation } from "react-query";
-import { getRequest} from "../utilities/request";
+import { request } from "../utilities/request";
 
+const postData = async (recipe) => {
+  try {
+    const data = await request("POST", "/recipes/create", recipe);
+    return data;
+  } catch (error) {
+    console.log(error);
+    // Handle error
+  }
+};
 
-const createRecipe = (recipe) => {
-    
-}
-
-export const useCreateRecipe = () => console.log('a')
+export const useCreateRecipe = () => {
+  const createRecipeMutation = useMutation((recipe) => postData(recipe));
+  return createRecipeMutation;
+};

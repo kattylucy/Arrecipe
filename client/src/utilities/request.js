@@ -7,13 +7,15 @@ export const recipesApi = axios.create({
   },
 });
 
-
-export const getRequest = async (url) => {
-  const response = await recipesApi.get(url);
-  return response.data;
-};
-
-export const postRequest = async (body) => {
-  const response = await recipesApi.get(url, body);
-  return response.data;
+export const request = async (method, url, data) => {
+  try {
+    const response = await recipesApi({
+      method,
+      url,
+      data
+    });
+    return response.data;
+  } catch (error) {
+    return response.error;
+  }
 };

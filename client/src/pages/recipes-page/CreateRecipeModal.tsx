@@ -6,6 +6,14 @@ import { TextInput } from "components/text-input/TextInput";
 import { Button } from "components/button/Button";
 import { useToast } from "hooks/useToast";
 import { DragAndDrop } from "components/drag-and-drop/DragAndDrop";
+import { Dropdown } from "components/dropdown/Dropdown";
+
+const options = [
+  { id: "side_dish", name: "Side Dish" },
+  { id: "dessert", name: "Dessert" },
+  { id: "main_dish", name: "Main Dish" },
+  { id: "drinks", name: "drinks" },
+];
 
 type CreateRecipeModalProps = {
   closeModal: () => void;
@@ -96,11 +104,13 @@ export const CreateRecipeModal = ({
           label="Recipe URL"
           onChange={addValue}
           placeholder="https://instagram.com/url"
+          style={{ marginBottom: 20 }}
         />
-        {/* need to add handle for edit */}
+        <Dropdown options={options} />
         <DragAndDrop label="Image" onUpload={onUpload} />
         <Footer>
           <Button
+            onClick={newRecipe}
             styles={{ marginTop: 20, height: 56, width: "100%" }}
             variant="contained"
           >

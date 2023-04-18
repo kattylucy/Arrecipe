@@ -19,7 +19,7 @@ const Cards = styled.div({
 const RecipesPage = () => {
   const { data, isLoading } = useGetRecipes();
 
-  if (isEmpty(data)) return <p>Empty</p>;
+  // if (isEmpty(data)) return <p>Empty</p>;
 
   return (
     <>
