@@ -12,7 +12,7 @@ const options = [
   { id: "side_dish", name: "Side Dish" },
   { id: "dessert", name: "Dessert" },
   { id: "main_dish", name: "Main Dish" },
-  { id: "drinks", name: "drinks" },
+  { id: "drinks", name: "Drinks" },
 ];
 
 type CreateRecipeModalProps = {
@@ -54,9 +54,18 @@ export const CreateRecipeModal = ({
     [setRecipe, recipe]
   );
 
+  const addType = useCallback(
+    (value) => {
+      const { id } = value;
+      setRecipe({ ...recipe, tag: id });
+    },
+    [setRecipe, recipe]
+  );
+
   const onUpload = useCallback(
     (image) => {
-      setRecipe({ ...recipe, image });
+      console.log(recipe);
+      setRecipe({ ...recipe, thumbnail: image });
     },
     [setRecipe, recipe]
   );
@@ -106,7 +115,7 @@ export const CreateRecipeModal = ({
           placeholder="https://instagram.com/url"
           style={{ marginBottom: 20 }}
         />
-        <Dropdown options={options} />
+        <Dropdown label="Type" onSelect={addType} options={options} />
         <DragAndDrop label="Image" onUpload={onUpload} />
         <Footer>
           <Button

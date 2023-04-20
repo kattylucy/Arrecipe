@@ -7,6 +7,7 @@ import { InputLabel } from "components/UI/Texts";
 import { Icon } from "components/icon/Icon";
 
 interface DropdownMenuProps {
+  label?: string;
   options: Array<{ name: string; id: string }>;
   onSelect: (value: { id: string; name: string }) => void;
   placeholder?: string;
@@ -50,6 +51,7 @@ const Container = styled.div(({ theme: { colors } }) => ({
 }));
 
 export const Dropdown = ({
+  label,
   options,
   onSelect,
   placeholder,
@@ -61,6 +63,7 @@ export const Dropdown = ({
     name: "",
     id: "",
   });
+
   useOutsideClick(ref, () => setIsVisible(false));
 
   const select = useCallback(
@@ -76,19 +79,23 @@ export const Dropdown = ({
   }, [visible, setIsVisible]);
 
   return (
-    <DropdownContainer onClick={toggle} {...props}>
+    <DropdownContainer onClick={toggle} {...props} ref={ref}>
+      <InputLabel>{label}</InputLabel>
       <Container>
-        <InputLabel>{selected.name ? selected.name : placeholder}</InputLabel>
+        <InputLabel opacity={selected.name ? 1 : 0.4}>
+          {selected.name ? selected.name : placeholder}
+        </InputLabel>
         <Icon
           icon={visible ? "arrowUp" : "arrowDown"}
           styles={{ width: 12, height: 12 }}
         />
       </Container>
       {visible && (
-        <DropdownWrapper ref={ref}>
+        <DropdownWrapper>
           {options.map((menuItem) => {
             return (
               <Button
+                key={menuItem.id}
                 styles={{
                   textAlign: "start",
                   padding: 8,
