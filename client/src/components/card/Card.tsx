@@ -4,14 +4,15 @@ import { KebabMenu } from "components/kebab-menu/KebabMenu";
 import { Button } from "components/button/Button";
 import { Icon } from "components/icon/Icon";
 import { Label } from "components/UI/Texts";
-import placeholder from "./placeholder.jpg";
 
 interface CardProps {
   calories: string;
   cookingTime: string;
   id: number;
-  instagramUrl: string;
+  url: string;
   name: string;
+  thumbnail: string;
+  tag: string;
 }
 
 const kebabItems = [
@@ -22,12 +23,17 @@ const kebabItems = [
 const CardContainer = styled.div(({ theme: { colors } }) => ({
   borderRadius: 16,
   margin: "18px 0px 0px 18px",
+  width: "31%",
 }));
 
-const Thumbnail = styled.img({
+const Thumbnail = styled.div(({ url }) => ({
   borderTopLeftRadius: 16,
   borderTopRightRadius: 16,
-});
+  backgroundImage: `url(${url})`,
+  backgroundSize: "cover",
+  height: 350,
+  borderRadius: 20,
+}));
 
 const CardIcons = styled.div(({ theme: { colors } }) => ({
   padding: 12,
@@ -82,13 +88,17 @@ export const Card = ({
   calories,
   cookingTime,
   id,
-  instagramUrl,
+  url,
   name,
+  thumbnail,
+  tag,
   ...props
 }: CardProps) => {
   return (
     <CardContainer {...props}>
-      <Thumbnail src={placeholder} />
+      <a target="_blank" href={url}>
+        <Thumbnail url={`data:image/jpeg;base64,${thumbnail}`} />
+      </a>
       <CardIcons>
         <TopRow>
           <Label
@@ -111,7 +121,7 @@ export const Card = ({
         <BottomRow>
           <Details icon="pie" label={`${calories} Kcal`} opacity="0.6" />
           <Details icon="timer" label={`${cookingTime} min`} opacity="0.3" />
-          <Details icon="recipes" label={`Dessert`} opacity="0.5" />
+          <Details icon="recipes" label={tag} opacity="0.5" />
         </BottomRow>
       </CardIcons>
     </CardContainer>

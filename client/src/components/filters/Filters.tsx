@@ -128,7 +128,7 @@ export const Filters = ({ sticky }: FiltersProps) => {
           Type of dish
         </Label>
         <Buttons>
-          {types.map((dish) => (
+          {types.map((dish, index) => (
             <Button
               className={
                 filter.dishTypes.filter(
@@ -137,6 +137,7 @@ export const Filters = ({ sticky }: FiltersProps) => {
                   ? "selected-btn"
                   : ""
               }
+              key={`${dish.label} - ${index}`}
               onClick={() => setDishType(dish)}
               styles={buttonStyles}
             >

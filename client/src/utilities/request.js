@@ -7,12 +7,13 @@ export const recipesApi = axios.create({
   },
 });
 
-export const request = async (method, url, data) => {
+export const request = async (method, url, data, config) => {
   try {
     const response = await recipesApi({
       method,
       url,
-      data
+      data,
+      ...config
     });
     return response.data;
   } catch (error) {

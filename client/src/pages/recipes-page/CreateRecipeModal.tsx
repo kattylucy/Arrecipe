@@ -43,6 +43,7 @@ export const CreateRecipeModal = ({
   visible,
 }: CreateRecipeModalProps) => {
   const [recipe, setRecipe] = useState({});
+  const [upload, setUpload] = useState();
   const createRecipe = useCreateRecipe();
   const toast = useToast();
 
@@ -64,21 +65,28 @@ export const CreateRecipeModal = ({
 
   const onUpload = useCallback(
     (image) => {
-      console.log(recipe);
-      setRecipe({ ...recipe, thumbnail: image });
+      setUpload(image);
     },
     [setRecipe, recipe]
   );
 
   const newRecipe = useCallback(async () => {
     try {
-      await createRecipe.mutateAsync(recipe);
+      const formData = new FormData();
+      for (const key in recipe) {
+        if (recipe.hasOwnProperty(key)) {
+          const value = recipe[key];
+          formData.append(key, value);
+        }
+      }
+      formData.append("thumbnail", upload);
+      await createRecipe.mutateAsync(formData);
       toast.open("New recipe was created.");
       closeModal();
     } catch (error) {
       toast.open("An error has ocurred.");
     }
-  }, [closeModal, recipe, createRecipe, toast]);
+  }, [closeModal, recipe, createRecipe, toast, upload]);
 
   return (
     <Modal

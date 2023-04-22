@@ -12,25 +12,27 @@ const BodyContainer = styled.div({
 const Cards = styled.div({
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "flex-start",
-  maxWidth: "75%",
+  justifyContent: "space-between",
+  width: "100%",
 });
 
 const RecipesPage = () => {
   const { data, isLoading } = useGetRecipes();
-
-  // if (isEmpty(data)) return <p>Empty</p>;
 
   return (
     <>
       <Header />
       <BodyContainer>
         <Filters sticky />
-        <Cards>
-          {data?.map((recipe) => (
-            <Card key={recipe.id} {...recipe} />
-          ))}
-        </Cards>
+        {isEmpty(data) ? (
+          <p>No recipes found</p>
+        ) : (
+          <Cards>
+            {data.map((recipe) => (
+              <Card key={recipe.id} {...recipe} />
+            ))}
+          </Cards>
+        )}
       </BodyContainer>
     </>
   );
