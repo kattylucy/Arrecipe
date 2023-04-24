@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify
 from src.database import Recipe, RecipeTags, db
-from src.const.status_code import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
-import base64
-import ipdb
+from src.utils import get_recipe_dict
+from src.const.status_code import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
 
 recipe = Blueprint("recipe", __name__, url_prefix='/api/v1/recipes')
 
@@ -10,30 +9,12 @@ recipe = Blueprint("recipe", __name__, url_prefix='/api/v1/recipes')
 @recipe.get('/')
 def get_all():
     recipes = Recipe.query.options(db.joinedload(Recipe.tag)).all()
-    recipe_list = []
-    for recipe in recipes:
-
-        if recipe.thumbnail is None:
-            thumbnail = None
-        else:
-            thumbnail = base64.b64encode(recipe.thumbnail).decode('utf-8')
-
-        recipe_data = {
-            'calories_count': recipe.calories_count,
-            'cooking_time': recipe.cooking_time,
-            'created_at': recipe.created_at,
-            'id': recipe.id,
-            'name': recipe.name,
-            'tag': recipe.tag.name,
-            'url': recipe.url,
-            'thumbnail': thumbnail
-        }
-        recipe_list.append(recipe_data)
+    recipe_list = [get_recipe_dict(recipe) for recipe in recipes]
 
     return jsonify({'data': recipe_list}), HTTP_200_OK
 
 
-@ recipe.post('/create')
+@recipe.post('/create')
 def create():
     calories_count = request.form.get('calories_count')
     cooking_time = request.form.get('cooking_time')
