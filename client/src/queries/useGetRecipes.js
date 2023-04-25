@@ -14,9 +14,19 @@ const transformData = (recipes) =>
     tag: recipe.tag
   }));
 
-const fetchData = async () => {
+  const transformUrl = filters => {
+    if (!filters) return '/recipes';
+    const urlParts = [];
+    if (filters.query) urlParts.push(`query=${filters.query}`);
+    if (filters.calories_count) urlParts.push(`calories_count=${filters.calories_count}`);
+    if (filters.cooking_time) urlParts.push(`cooking_time=${filters.cooking_time}`);
+    return '/recipes?' + urlParts.join('&');
+  }
+
+const fetchData = async ({ queryKey }) => {
+  const filters = queryKey[1];
   try {
-    const data = await request("GET", "/recipes");
+    const data = await request("GET", transformUrl(filters));
     return isEmpty(data.data) ? [] : transformData(data.data)
   } catch (error) {
     console.log(error);
@@ -24,11 +34,13 @@ const fetchData = async () => {
   }
 };
 
-const useGetRecipes = (options) =>
-  useQuery("recipes", fetchData, {
+const useGetRecipes = (filter) => {
+  const query = useQuery(["recipes", filter], fetchData, {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    ...options,
   });
+
+  return { ...query };
+};
 
 export default useGetRecipes;

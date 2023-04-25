@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import styled from "styled-components";
 import isEmpty from "lodash/isEmpty";
 import useGetRecipes from "queries/useGetRecipes";
@@ -17,15 +18,23 @@ const Cards = styled.div({
 });
 
 const RecipesPage = () => {
-  const { data, isLoading } = useGetRecipes();
+  const [filters, setFilters] = useState({});
+  const { data } = useGetRecipes(filters);
+
+  const createFilters = useCallback(
+    (value, label) => {
+      setFilters((prevFilters) => ({ ...prevFilters, [label]: value }));
+    },
+    [setFilters]
+  );
 
   return (
     <>
       <Header />
       <BodyContainer>
-        <Filters sticky />
+        <Filters createFilters={createFilters} filter={{}} sticky />
         {isEmpty(data) ? (
-          <p>No recipes found</p>
+          <p style={{ margin: "0 auto" }}>No recipes found</p>
         ) : (
           <Cards>
             {data.map((recipe) => (

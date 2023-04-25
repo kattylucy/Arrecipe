@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
 from src.recipe import recipe
-from src.search import search
 from src.database import db
 from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
@@ -26,7 +25,6 @@ def create_app():
 
     # Register blueprints
     app.register_blueprint(recipe)
-    app.register_blueprint(search)
 
     # Create default tags if they don't exist
     @app.before_first_request

@@ -1,4 +1,3 @@
-import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { SearchBar } from "components/search-bar/SearchBar";
 import { SliderFilter } from "components/slider/SliderFilter";
@@ -6,6 +5,8 @@ import { Label } from "components/UI/Texts";
 import { Button } from "components/button/Button";
 
 interface FiltersProps {
+  createFilters: (value: string | number, label: string) => void;
+  filter: object;
   sticky?: boolean;
 }
 
@@ -62,64 +63,35 @@ const Buttons = styled.div({
   marginTop: 12,
 });
 
-export const Filters = ({ sticky }: FiltersProps) => {
-  const [filter, setFilter] = useState<{
-    dishTypes: Array<{ label: string; id: string }>;
-    calories: number;
-    cookingTime: number;
-  }>({
-    calories: 50,
-    cookingTime: 5,
-    dishTypes: [],
-  });
-
-  const setDishType = useCallback(
-    (type) => {
-      if (filter.dishTypes.includes(type)) {
-        setFilter({
-          ...filter,
-          dishTypes: filter.dishTypes.filter(
-            (dish) => dish.label !== type.label
-          ),
-        });
-      } else {
-        setFilter({ ...filter, dishTypes: [...filter.dishTypes, type] });
-      }
-    },
-    [filter, setFilter]
-  );
-
-  const createFilters = useCallback(
-    (value, label) => {
-      setFilter({ ...filter, [label]: value });
-    },
-    [setFilter, filter]
-  );
-
+export const Filters = ({ createFilters, filter, sticky }: FiltersProps) => {
   return (
     <FiltersContainer sticky={sticky}>
-      <SearchBar />
+      <SearchBar
+        onChange={createFilters}
+        placeholder="Search recipes..."
+        value={filter.query}
+      />
       <Separator />
       <Sliders>
         <SliderFilter
           countingRange={50}
           labels={{
             label: "Kcal per serving",
-            sublabel: `${filter.calories} Kcal`,
+            sublabel: `${filter.calories_count} Kcal`,
           }}
           maxValue={1000}
-          minValue={50}
-          setSliderValue={(value) => createFilters(value, "calories")}
+          minValue={0}
+          setSliderValue={(value) => createFilters(value, "calories_count")}
         />
         <SliderFilter
           countingRange={5}
           labels={{
             label: "Time to prepare",
-            sublabel: `${filter.cookingTime} min`,
+            sublabel: `${filter.cooking_time} min`,
           }}
           maxValue={120}
-          minValue={5}
-          setSliderValue={(value) => createFilters(value, "cookingTime")}
+          minValue={0}
+          setSliderValue={(value) => createFilters(value, "cooking_time")}
           style={{ marginTop: 20 }}
         />
       </Sliders>
@@ -131,14 +103,14 @@ export const Filters = ({ sticky }: FiltersProps) => {
           {types.map((dish, index) => (
             <Button
               className={
-                filter.dishTypes.filter(
+                filter?.dishTypes?.filter(
                   (dishFilter) => dishFilter.label == dish.label
                 ).length
                   ? "selected-btn"
                   : ""
               }
               key={`${dish.label} - ${index}`}
-              onClick={() => setDishType(dish)}
+              // onClick={() => setDishType(dish)}
               styles={buttonStyles}
             >
               {dish.label}

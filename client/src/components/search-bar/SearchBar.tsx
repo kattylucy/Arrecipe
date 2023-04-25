@@ -1,6 +1,12 @@
 import styled from "styled-components";
-import { Icon } from "components/icon/Icon";
+import { debounce } from "lodash";
 import { useCallback, useState } from "react";
+
+interface SearchProps {
+  onChange: (value: string, label: string) => void;
+  placeholder: string;
+  value: string;
+}
 
 const SearchBarContainer = styled.div({
   alignItems: "center",
@@ -13,46 +19,41 @@ const SearchBarContainer = styled.div({
   margin: 20,
 });
 
-const Input = styled.input(({ theme: { colors }}) => ({
+const Input = styled.input(({ theme: { colors } }) => ({
   background: "none",
   border: "none",
   color: colors.black,
   fontSize: 14,
   outline: "none",
   "::placeholder": {
-    opacity: 0.4
+    opacity: 0.4,
   },
 }));
 
-const SearchIcon = styled.div(({ theme: { colors } }) => ({
-  alignItems: "center",
-  background: colors.main,
-  borderRadius: 30,
-  display: "flex",
-  padding: 12,
-}));
+export const SearchBar = ({ onChange, placeholder }: SearchProps) => {
+  const [value, setValue] = useState("");
+  const debouncedOnChange = useCallback(
+    debounce((value) => {
+      onChange(value, "query");
+    }, 500),
+    [onChange]
+  );
 
-export const SearchButton = () => (
-  <SearchIcon>
-    <Icon icon="search" styles={{ width: 16, height: 16 }} />
-  </SearchIcon>
-);
-
-export const SearchBar = () => {
-  const [inputVal, setInputVal] = useState();
-
-  const onChange = useCallback((e) => {
-    setInputVal(e.target.value);
-  }, []);
+  const onSearchChange = useCallback(
+    (e) => {
+      setValue(e.target.value);
+      debouncedOnChange(e.target.value);
+    },
+    [debouncedOnChange, setValue]
+  );
 
   return (
     <SearchBarContainer>
       <Input
-        onChange={onChange}
-        placeholder="Search recipes..."
-        value={inputVal}
+        onChange={onSearchChange}
+        placeholder={placeholder}
+        value={value}
       />
-      <SearchButton />
     </SearchBarContainer>
   );
 };

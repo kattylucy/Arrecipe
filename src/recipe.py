@@ -8,7 +8,28 @@ recipe = Blueprint("recipe", __name__, url_prefix='/api/v1/recipes')
 
 @recipe.get('/')
 def get_all():
-    recipes = Recipe.query.options(db.joinedload(Recipe.tag)).all()
+    query = request.args.get('query', '').lower()
+    calories_count = request.args.get('calories_count', '').lower()
+    cooking_time = request.args.get('cooking_time', '').lower()
+    # tags = request.args.getlist('tags')
+
+    recipes = Recipe.query
+
+    if query:
+        recipes = recipes.filter(Recipe.name.ilike(f'%{query}%'))
+
+    if calories_count:
+        calories_count_int = int(calories_count)
+        recipes = recipes.filter(Recipe.calories_count <= calories_count_int)
+
+    if cooking_time:
+        cooking_time_int = int(cooking_time)
+        recipes = recipes.filter(Recipe.cooking_time == cooking_time_int)
+
+    # if tags:
+    #     recipes = recipes.filter(Recipe.tags.any(Tag.name.in_(tags)))
+
+    recipes = recipes.options(db.joinedload(Recipe.tag)).all()
     recipe_list = [get_recipe_dict(recipe) for recipe in recipes]
 
     return jsonify({'data': recipe_list}), HTTP_200_OK
