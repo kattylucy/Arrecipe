@@ -17,6 +17,7 @@ const SearchBarContainer = styled.div({
   justifyContent: "space-between",
   padding: "8px 8px 8px 20px",
   margin: 20,
+  height: 56,
 });
 
 const Input = styled.input(({ theme: { colors } }) => ({
