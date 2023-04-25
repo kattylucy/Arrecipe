@@ -102,7 +102,7 @@ export const Filters = ({ createFilters, filters, sticky }: FiltersProps) => {
           }}
           maxValue={1000}
           minValue={0}
-          setSliderValue={(value) => createFilters(value, "calories_count")}
+          setSliderValue={(value) => createFilters(value, "caloriesCount")}
         />
         <SliderFilter
           countingRange={5}
@@ -112,7 +112,7 @@ export const Filters = ({ createFilters, filters, sticky }: FiltersProps) => {
           }}
           maxValue={120}
           minValue={0}
-          setSliderValue={(value) => createFilters(value, "cooking_time")}
+          setSliderValue={(value) => createFilters(value, "cookingTime")}
           style={{ marginTop: 20 }}
         />
       </Sliders>
