@@ -9,19 +9,17 @@ const BodyContainer = styled.div({
   display: "flex",
 });
 
-const Cards = styled.div({
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "space-between",
-  width: "100%",
-});
-
 const RecipesPage = () => {
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({
+    caloriesCount: 0,
+    cookingTime: 0,
+    tags: {},
+    query: "",
+  });
   const { data, isLoading } = useGetRecipes(filters);
 
   const createFilters = useCallback(
-    (value, label) => {
+    (value: any, label: string) => {
       setFilters((prevFilters) => ({ ...prevFilters, [label]: value }));
     },
     [setFilters]
@@ -31,7 +29,7 @@ const RecipesPage = () => {
     <>
       <Header />
       <BodyContainer>
-        <Filters createFilters={createFilters} filter={{}} sticky />
+        <Filters createFilters={createFilters} filters={filters} sticky />
         <Recipes isLoading={isLoading} recipes={data} />
       </BodyContainer>
     </>

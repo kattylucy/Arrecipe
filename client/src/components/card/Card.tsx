@@ -26,13 +26,16 @@ const CardContainer = styled.div(({ theme: { colors } }) => ({
   width: "31%",
 }));
 
-const Thumbnail = styled.div(({ url }) => ({
+const Thumbnail = styled.div<{ url: string }>(({ url }) => ({
   borderTopLeftRadius: 16,
   borderTopRightRadius: 16,
   backgroundImage: `url(${url})`,
   backgroundSize: "cover",
   height: 350,
   borderRadius: 20,
+  "&:hover": {
+    opacity: 0.8,
+  },
 }));
 
 const CardIcons = styled.div(({ theme: { colors } }) => ({

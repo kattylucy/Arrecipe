@@ -26,6 +26,7 @@ const Input = styled.input(({ theme: { colors } }) => ({
   color: colors.black,
   fontSize: 14,
   outline: "none",
+  width: "100%",
   "::placeholder": {
     opacity: 0.4,
   },

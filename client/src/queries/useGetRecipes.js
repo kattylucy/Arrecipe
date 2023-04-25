@@ -18,8 +18,12 @@ const transformData = (recipes) =>
     if (!filters) return '/recipes';
     const urlParts = [];
     if (filters.query) urlParts.push(`query=${filters.query}`);
-    if (filters.calories_count) urlParts.push(`calories_count=${filters.calories_count}`);
-    if (filters.cooking_time) urlParts.push(`cooking_time=${filters.cooking_time}`);
+    if (filters.calories_count) urlParts.push(`calories_count=${filters.caloriesCount}`);
+    if (filters.cooking_time) urlParts.push(`cooking_time=${filters.cookingTime}`);
+    if (!isEmpty(filters.tags)){
+      const toArr = Object.values(filters.tags);
+      urlParts.push(`tags=${toArr}`)
+    }
     return '/recipes?' + urlParts.join('&');
   }
 

@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from src.database import Recipe, RecipeTags, db
 from src.utils import get_recipe_dict
 from src.const.status_code import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
+import ipdb
 
 recipe = Blueprint("recipe", __name__, url_prefix='/api/v1/recipes')
 
@@ -11,7 +12,7 @@ def get_all():
     query = request.args.get('query', '').lower()
     calories_count = request.args.get('calories_count', '').lower()
     cooking_time = request.args.get('cooking_time', '').lower()
-    # tags = request.args.getlist('tags')
+    tags = request.args.get('tags', '').lower()
 
     recipes = Recipe.query
 
@@ -26,8 +27,11 @@ def get_all():
         cooking_time_int = int(cooking_time)
         recipes = recipes.filter(Recipe.cooking_time == cooking_time_int)
 
-    # if tags:
-    #     recipes = recipes.filter(Recipe.tags.any(Tag.name.in_(tags)))
+    if tags:
+        tags = tags.split(',')
+        tag_ids = [tag.id for tag in RecipeTags.query.filter(
+            RecipeTags.name.in_(tags)).all()]
+        recipes = recipes.filter(Recipe.tag_id.in_(tag_ids))
 
     recipes = recipes.options(db.joinedload(Recipe.tag)).all()
     recipe_list = [get_recipe_dict(recipe) for recipe in recipes]
