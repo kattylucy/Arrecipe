@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from src.recipe import recipe
 from src.database import db
 from flask_cors import CORS
@@ -8,7 +8,7 @@ import os
 
 
 def create_app():
-    app = Flask(__name__, static_folder='./client/dist',  static_url_path='/')
+    app = Flask(__name__, static_folder='../client/dist')
     CORS(app, support_credentials=True)
 
     # Load configuration from environment variables
@@ -47,11 +47,14 @@ def create_app():
     @app.errorhandler(500)
     def internal_error(error):
         db.session.rollback()
-        return jsonify({"error": "Internal server error", error: error}), HTTP_500_INTERNAL_SERVER_ERROR
+        return jsonify({"error": "Internal server error"}), HTTP_500_INTERNAL_SERVER_ERROR
 
-    # Serve React app
     @app.route('/')
-    def index():
-        return app.send_static_file('index.html')
+    @app.route('/<path:path>')
+    def serve_static(path='index.html'):
+        if os.path.isfile(app.static_folder + '/' + path):
+            return send_from_directory(app.static_folder, path)
+        else:
+            return send_from_directory(app.static_folder, 'index.html')
 
     return app
