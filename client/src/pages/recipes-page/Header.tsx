@@ -34,7 +34,7 @@ const NavBarContainer = styled.div(({ theme: { colors, media } }) => ({
   position: "sticky",
   top: 0,
   zIndex: 1,
-  [media.mobileL]: {
+  [media.tablet]: {
     boxShadow: "none",
     borderRadius: 0,
     position: "initial",
@@ -53,7 +53,7 @@ const CreateRecipe = styled.div(({ theme: { media } }) => ({
     height: 16,
     marginLeft: 4,
   },
-  [media.mobileL]: {
+  [media.tablet]: {
     border: "none",
     "& > img": {
       width: 20,

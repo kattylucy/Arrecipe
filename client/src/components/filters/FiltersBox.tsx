@@ -44,9 +44,10 @@ const FiltersContainer = styled.div<{ sticky?: boolean }>(
     top: sticky ? 100 : undefined,
     marginTop: 20,
     maxWidth: "25%",
-    [media.mobileL]: {
+    [media.tablet]: {
       maxWidth: "100%",
       boxShadow: "none",
+      overflow: "scroll",
     },
   })
 );

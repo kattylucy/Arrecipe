@@ -12,7 +12,7 @@ function getWindowDimensions() {
 export default function useWindowDimensions() {
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
   
-  const isMobileView = useMemo(() => windowDimensions.width <= size.mobileL, [windowDimensions]);
+  const isMobileView = useMemo(() => windowDimensions.width <= size.tablet, [windowDimensions]);
 
   useEffect(() => {
     function handleResize() {

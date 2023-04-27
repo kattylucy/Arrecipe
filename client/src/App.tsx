@@ -7,7 +7,7 @@ export const AppContainer = styled.div(({ theme: { fonts, media } }) => ({
   fontFamily: `normal, ${fonts.main}`,
   maxWidth: "90%",
   margin: "auto",
-  [media.mobileL]: {
+  [media.tablet]: {
     maxWidth: "100%",
     minHeight: "100vh",
   },
