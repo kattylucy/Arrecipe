@@ -1,14 +1,14 @@
 from flask import Flask, jsonify
 from src.recipe import recipe
 from src.database import db
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask_migrate import Migrate
 from src.const.status_code import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_404_NOT_FOUND
 import os
 
 
 def create_app():
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, static_folder='./client/dist',  static_url_path='/')
     CORS(app, support_credentials=True)
 
     # Load configuration from environment variables
@@ -48,5 +48,10 @@ def create_app():
     def internal_error(error):
         db.session.rollback()
         return jsonify({"error": "Internal server error"}), HTTP_500_INTERNAL_SERVER_ERROR
+
+    # Serve React app
+    @app.route('/')
+    def serve_react_app():
+        return app.send_static_file('index.html')
 
     return app
