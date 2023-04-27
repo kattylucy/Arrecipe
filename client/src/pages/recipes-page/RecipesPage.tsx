@@ -2,12 +2,15 @@ import { useCallback, useState } from "react";
 import styled from "styled-components";
 import useGetRecipes from "queries/useGetRecipes";
 import { Filters } from "components/filters/Filters";
+import useWindowDimensions from "hooks/useWindowDimensions";
 import { Header } from "./Header";
 import { Recipes } from "./Recipes";
 
 const BodyContainer = styled.div({
   display: "flex",
 });
+
+const MobileView = styled.div({});
 
 const RecipesPage = () => {
   const [filters, setFilters] = useState({
@@ -17,6 +20,7 @@ const RecipesPage = () => {
     query: "",
   });
   const { data, isLoading } = useGetRecipes(filters);
+  const [isMobileView] = useWindowDimensions();
 
   const createFilters = useCallback(
     (value: any, label: string) => {
@@ -24,6 +28,25 @@ const RecipesPage = () => {
     },
     [setFilters]
   );
+
+  if (isMobileView) {
+    return (
+      <MobileView>
+        <Header />
+        <Recipes
+          isMobileView={isMobileView}
+          isLoading={isLoading}
+          recipes={data}
+        />
+        <Filters
+          createFilters={createFilters}
+          isMobileView={isMobileView}
+          filters={filters}
+          sticky
+        />
+      </MobileView>
+    );
+  }
 
   return (
     <>

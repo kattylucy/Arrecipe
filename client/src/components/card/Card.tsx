@@ -13,6 +13,7 @@ interface CardProps {
   name: string;
   thumbnail: string;
   tag: string;
+  isMobileView?: boolean;
 }
 
 const kebabItems = [
@@ -20,10 +21,10 @@ const kebabItems = [
   { name: "Delete", id: uniqueId() },
 ];
 
-const CardContainer = styled.div(({ theme: { colors } }) => ({
+const CardContainer = styled.div<{ mobile: boolean }>(({ mobile }) => ({
   borderRadius: 16,
-  margin: "18px 0px 0px 18px",
-  width: "31%",
+  margin: mobile ? 20 : "18px 0px 0px 18px",
+  width: mobile ? "100%" : "31%",
 }));
 
 const Thumbnail = styled.div<{ url: string }>(({ url }) => ({
@@ -38,9 +39,9 @@ const Thumbnail = styled.div<{ url: string }>(({ url }) => ({
   },
 }));
 
-const CardIcons = styled.div(({ theme: { colors } }) => ({
+const CardIcons = styled.div({
   padding: 12,
-}));
+});
 
 const TopRow = styled.div({
   alignItems: "center",
@@ -66,8 +67,8 @@ const BottomRow = styled.div({
 const DetailsWrapper = styled.div(({ theme: { colors } }) => ({
   alignItems: "center",
   borderRight: `2px solid ${colors.hoveredBg}`,
-  paddingRight: 10,
   display: "flex",
+  width: 90,
 }));
 
 const Details = ({ icon, label, opacity }) => (
@@ -95,10 +96,11 @@ export const Card = ({
   name,
   thumbnail,
   tag,
+  isMobileView,
   ...props
 }: CardProps) => {
   return (
-    <CardContainer {...props}>
+    <CardContainer mobile={isMobileView} {...props}>
       <a target="_blank" href={url}>
         <Thumbnail url={`data:image/jpeg;base64,${thumbnail}`} />
       </a>

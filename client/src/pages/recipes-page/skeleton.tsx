@@ -1,13 +1,17 @@
 import { Skeleton, Stack } from "@chakra-ui/react";
 import styled from "styled-components";
 
-const StyledStack = styled(Stack)({
-  width: "30%",
+interface SkeletonProps {
+  isMobileView?: boolean;
+}
+
+const StyledStack = styled(Stack)<{ mobile?: boolean }>(({ mobile }) => ({
+  width: mobile ? "100%" : "30%",
   margin: "20px 12px",
   ".chakra-skeleton": {
     borderRadius: 20,
   },
-});
+}));
 
 const Wrapper = styled.div({
   display: "flex",
@@ -16,25 +20,25 @@ const Wrapper = styled.div({
   flexWrap: "wrap",
 });
 
-const Container = styled.div({
+const Container = styled.div<{ mobile?: boolean }>(({ mobile }) => ({
   display: "flex",
   justifyContent: "space-between",
   width: "100%",
   "& > div": {
-    width: "30%",
+    width: mobile ? "100%" : "30%",
   },
-});
+}));
 
 const Card = styled(Skeleton)({
   height: 350,
 });
 
-const Stacks = () => {
+const Stacks = ({ isMobileView }: SkeletonProps) => {
   return (
-    <StyledStack>
+    <StyledStack mobile={isMobileView}>
       <Card startColor="#D9D9D9" endColor="#D9D9D9.900" />
       <Skeleton startColor="#D9D9D9" endColor="#D9D9D9.900" height="20px" />
-      <Container>
+      <Container mobile={isMobileView}>
         <Skeleton startColor="#D9D9D9" endColor="#D9D9D9.900" height="20px" />
         <Skeleton startColor="#D9D9D9" endColor="#D9D9D9.900" height="20px" />
         <Skeleton startColor="#D9D9D9" endColor="#D9D9D9.900" height="20px" />
@@ -43,18 +47,18 @@ const Stacks = () => {
   );
 };
 
-export const SkeletonLoader = () => {
+export const SkeletonLoader = ({ isMobileView }: SkeletonProps) => {
   return (
     <Wrapper>
-      <Stacks />
-      <Stacks />
-      <Stacks />
-      <Stacks />
-      <Stacks />
-      <Stacks />
-      <Stacks />
-      <Stacks />
-      <Stacks />
+      <Stacks isMobileView={isMobileView} />
+      <Stacks isMobileView={isMobileView} />
+      <Stacks isMobileView={isMobileView} />
+      <Stacks isMobileView={isMobileView} />
+      <Stacks isMobileView={isMobileView} />
+      <Stacks isMobileView={isMobileView} />
+      <Stacks isMobileView={isMobileView} />
+      <Stacks isMobileView={isMobileView} />
+      <Stacks isMobileView={isMobileView} />
     </Wrapper>
   );
 };

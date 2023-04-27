@@ -37,6 +37,7 @@ const NavBarContainer = styled.div(({ theme: { colors, media } }) => ({
   [media.mobileL]: {
     boxShadow: "none",
     borderRadius: 0,
+    position: "initial",
   },
 }));
 

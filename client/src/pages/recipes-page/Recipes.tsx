@@ -7,6 +7,7 @@ import { SkeletonLoader } from "./skeleton";
 
 interface RecipesProps {
   isLoading: boolean;
+  isMobileView?: boolean;
   recipes: Array<{
     calories: string;
     cookingTime: string;
@@ -32,9 +33,9 @@ const Cards = styled.div({
   width: "100%",
 });
 
-export const Recipes = ({ isLoading, recipes }: RecipesProps) => {
+export const Recipes = ({ isLoading, isMobileView, recipes }: RecipesProps) => {
   if (isLoading) {
-    return <SkeletonLoader />;
+    return <SkeletonLoader isMobileView={isMobileView} />;
   }
 
   if (isEmpty(recipes)) {
@@ -48,7 +49,7 @@ export const Recipes = ({ isLoading, recipes }: RecipesProps) => {
   return (
     <Cards>
       {recipes.map((recipe) => (
-        <Card key={recipe.id} {...recipe} />
+        <Card isMobileView={isMobileView} key={recipe.id} {...recipe} />
       ))}
     </Cards>
   );

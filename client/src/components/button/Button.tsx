@@ -34,9 +34,6 @@ const StyledButton = styled.button<{
   padding: withHover ? 6 : 0,
   opacity: disabled ? 0.5 : 1,
   fontSize: 14,
-  [media.mobileL]: {
-    display: "none",
-  },
   "& > img": {
     width: 20,
     height: 20,
