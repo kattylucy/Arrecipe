@@ -44,7 +44,7 @@ const styles = {
     fontWeight: 600,
     opacity: 1,
     "& > span": {
-      bottom: '-20px',
+      bottom: "-20px",
       borderBottom: `2px solid ${theme.colors.main}`,
       position: "absolute",
       width: "100%",

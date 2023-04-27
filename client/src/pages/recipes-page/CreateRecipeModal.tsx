@@ -43,7 +43,7 @@ export const CreateRecipeModal = ({
   visible,
 }: CreateRecipeModalProps) => {
   const [recipe, setRecipe] = useState({});
-  const [upload, setUpload] = useState();
+  const [upload, setUpload] = useState("");
   const createRecipe = useCreateRecipe();
   const toast = useToast();
 

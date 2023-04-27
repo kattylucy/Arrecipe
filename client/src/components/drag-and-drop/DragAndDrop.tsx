@@ -9,11 +9,11 @@ interface DragAndDropProps {
   onUpload: (e: any) => void;
 }
 
-const Container = styled.div<{ isDragActive: boolean }>(
-  ({ isDragActive, theme: { colors } }) => ({
+const Container = styled.div<{ active?: boolean }>(
+  ({ active, theme: { colors } }) => ({
     alignItems: "center",
     border: colors.dashedBorder,
-    borderColor: isDragActive ? colors.main : colors.dashedBorderColor,
+    borderColor: active ? colors.main : colors.dashedBorderColor,
     borderRadius: 12,
     cursor: "pointer",
     display: "flex",
@@ -46,7 +46,7 @@ export const DragAndDrop = ({
   return (
     <div style={{ marginTop: 20 }} {...props}>
       <Container
-        isDragActive={isDragActive || file?.name}
+        active={isDragActive || file?.name}
         draggable="true"
         {...getRootProps()}
       >

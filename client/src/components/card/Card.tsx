@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import uniqueId from "lodash/uniqueId";
-import { KebabMenu } from "components/kebab-menu/KebabMenu";
+import { KebabMenu } from "components/kebab-menu/kebabMenu";
 import { Button } from "components/button/Button";
 import { Icon } from "components/icon/Icon";
 import { Label } from "components/UI/Texts";
@@ -21,7 +21,7 @@ const kebabItems = [
   { name: "Delete", id: uniqueId() },
 ];
 
-const CardContainer = styled.div<{ mobile: boolean }>(({ mobile }) => ({
+const CardContainer = styled.div<{ mobile?: boolean }>(({ mobile }) => ({
   borderRadius: 16,
   margin: mobile ? 20 : "18px 0px 0px 18px",
   width: mobile ? "100%" : "31%",

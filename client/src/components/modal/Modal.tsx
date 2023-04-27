@@ -29,7 +29,7 @@ const ModalContainer = styled.div({
   zIndex: 2,
 });
 
-const ModalBody = styled.div<{ styles: React.CSSProperties; width: string }>(
+const ModalBody = styled.div<{ styles: React.CSSProperties; width?: string }>(
   ({ theme: { colors }, styles, width }) => ({
     background: colors.white,
     borderRadius: 16,
@@ -39,8 +39,8 @@ const ModalBody = styled.div<{ styles: React.CSSProperties; width: string }>(
     top: "50%",
     overflow: "auto",
     width: width,
-    '::-webkit-scrollbar':{
-      display: 'none'
+    "::-webkit-scrollbar": {
+      display: "none",
     },
     ...styles,
   })
@@ -80,7 +80,7 @@ export const Modal = ({
           </ModalBody>
         </ModalContainer>
       </>,
-      document.querySelector("#modal-root")
+      document.querySelector("#modal-root")!
     );
   } else return null;
 };

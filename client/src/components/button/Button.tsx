@@ -6,7 +6,7 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   active?: boolean;
   children: React.ReactNode;
   disabled?: boolean;
-  styles?: React.CSSProperties;
+  styles?: any;
   variant: VariantType;
   withHover?: boolean;
 }
@@ -14,8 +14,8 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 const StyledButton = styled.button<{
   styles: any;
   variant: VariantType;
-  withHover: boolean;
-}>(({ disabled, theme: { colors, media }, styles, variant, withHover }) => ({
+  withHover?: boolean;
+}>(({ disabled, theme: { colors }, styles, variant, withHover }) => ({
   alignItems: variant === "icon" ? "center" : undefined,
   background:
     variant === "contained"
