@@ -47,11 +47,11 @@ def create_app():
     @app.errorhandler(500)
     def internal_error(error):
         db.session.rollback()
-        return jsonify({"error": "Internal server error"}), HTTP_500_INTERNAL_SERVER_ERROR
+        return jsonify({"error": "Internal server error", error: error}), HTTP_500_INTERNAL_SERVER_ERROR
 
     # Serve React app
     @app.route('/')
-    def serve_react_app():
+    def index():
         return app.send_static_file('index.html')
 
     return app
