@@ -9,7 +9,8 @@ import os
 
 def create_app():
     app = Flask(__name__, static_folder='../client/dist')
-    CORS(app, support_credentials=True)
+    app.config['CORS_HEADERS'] = 'Content-Type'
+    CORS(app)
 
     # Load configuration from environment variables
     app.config.from_mapping(

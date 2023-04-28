@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const recipesApi = axios.create({
-  baseURL: "https://my-app.herokuapp.com/api/v1/",
+  baseURL: "https://arrecipe.herokuapp.com/api/v1",
   headers: {
     "Content-type": "application/json",
   },
