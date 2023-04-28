@@ -29,8 +29,6 @@ const RecipesPage = () => {
     [setFilters]
   );
 
-  console.log(isMobileView);
-
   if (isMobileView) {
     return (
       <MobileView>
