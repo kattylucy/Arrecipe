@@ -2,7 +2,6 @@ from flask import Blueprint, request, jsonify
 from src.database import Recipe, RecipeTags, db
 from src.utils import get_recipe_dict
 from src.const.status_code import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
-import ipdb
 
 recipe = Blueprint("recipe", __name__, url_prefix='/api/v1/recipes')
 
