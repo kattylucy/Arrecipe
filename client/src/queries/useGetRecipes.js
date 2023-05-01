@@ -26,7 +26,7 @@ const transformData = (recipes) =>
       const toArr = Object.values(filters.tags);
       urlParts.push(`tags=${toArr}`)
     }
-    return `/recipes?&page=${page}&limit=${LIMIT}` + urlParts.join('&');
+    return `/recipes?` + urlParts.join('&') + `&page=${page}&limit=${LIMIT}`;
   }
 
 const fetchData = async (filters, pageParam) => {
