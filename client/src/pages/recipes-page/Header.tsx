@@ -72,13 +72,15 @@ export const Header = () => {
   const [isMobileView] = useWindowDimensions();
   return (
     <NavBarContainer>
-      <Logo>
-        <Icon icon="logo" />
-        <Icon
-          icon="letter"
-          styles={{ height: 32, width: 86, marginLeft: 4, marginTop: 6 }}
-        />
-      </Logo>
+      <a href="/">
+        <Logo>
+          <Icon icon="logo" />
+          <Icon
+            icon="letter"
+            styles={{ height: 32, width: 86, marginLeft: 4, marginTop: 6 }}
+          />
+        </Logo>
+      </a>
       {!isMobileView && <Tabs tabContent={TabContent} />}
       <CreateRecipe>
         <Button

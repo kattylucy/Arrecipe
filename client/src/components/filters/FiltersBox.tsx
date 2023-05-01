@@ -48,6 +48,7 @@ const FiltersContainer = styled.div<{ sticky?: boolean }>(
       maxWidth: "100%",
       boxShadow: "none",
       overflow: "scroll",
+      marginTop: 0,
     },
   })
 );

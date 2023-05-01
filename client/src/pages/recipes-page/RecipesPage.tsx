@@ -1,5 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect, useRef, useMemo } from "react";
 import styled from "styled-components";
+import flatMap from "lodash/flatMap";
 import useGetRecipes from "queries/useGetRecipes";
 import { Filters } from "components/filters/Filters";
 import useWindowDimensions from "hooks/useWindowDimensions";
@@ -19,8 +20,14 @@ const RecipesPage = () => {
     tags: {},
     query: "",
   });
-  const { data, isLoading } = useGetRecipes(filters);
+  const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
+    useGetRecipes(filters);
+  const ref = useRef(null);
   const [isMobileView] = useWindowDimensions();
+  const recipeList = useMemo(
+    () => (data?.pages ? flatMap(data.pages) : []),
+    [data]
+  );
 
   const createFilters = useCallback(
     (value: any, label: string) => {
@@ -29,14 +36,27 @@ const RecipesPage = () => {
     [setFilters]
   );
 
+  useEffect(() => {
+    if (ref.current) {
+      const { scrollTop, scrollHeight, clientHeight } = ref.current;
+      if (
+        scrollTop + clientHeight === scrollHeight &&
+        hasNextPage &&
+        !isFetchingNextPage
+      ) {
+        fetchNextPage();
+      }
+    }
+  }, [ref, fetchNextPage, hasNextPage, isFetchingNextPage]);
+
   if (isMobileView) {
     return (
-      <MobileView>
+      <MobileView ref={ref}>
         <Header />
         <Recipes
           isMobileView={isMobileView}
           isLoading={isLoading}
-          recipes={data}
+          recipes={recipeList}
         />
         <Filters
           createFilters={createFilters}
@@ -51,9 +71,9 @@ const RecipesPage = () => {
   return (
     <>
       <Header />
-      <BodyContainer>
+      <BodyContainer ref={ref}>
         <Filters createFilters={createFilters} filters={filters} sticky />
-        <Recipes isLoading={isLoading} recipes={data} />
+        <Recipes isLoading={isLoading} recipes={recipeList} />
       </BodyContainer>
     </>
   );

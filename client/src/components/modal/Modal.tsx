@@ -30,7 +30,7 @@ const ModalContainer = styled.div({
 });
 
 const ModalBody = styled.div<{ styles: React.CSSProperties; width?: string }>(
-  ({ theme: { colors }, styles, width }) => ({
+  ({ theme: { colors, media }, styles, width }) => ({
     background: colors.white,
     borderRadius: 16,
     left: "50%",
@@ -41,6 +41,9 @@ const ModalBody = styled.div<{ styles: React.CSSProperties; width?: string }>(
     width: width,
     "::-webkit-scrollbar": {
       display: "none",
+    },
+    [media.tablet]: {
+      width: "90%",
     },
     ...styles,
   })

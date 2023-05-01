@@ -93,9 +93,14 @@ export const CreateRecipeModal = ({
       closeModal={closeModal}
       title="New recipe"
       visible={visible}
-      styles={{ maxHeight: 500 }}
+      styles={{ maxHeight: "90vh" }}
     >
       <Body>
+        <DragAndDrop
+          label="Image"
+          onUpload={onUpload}
+          style={{ marginBottom: 20 }}
+        />
         <TextInput
           id="name"
           label="Name"
@@ -124,7 +129,6 @@ export const CreateRecipeModal = ({
           style={{ marginBottom: 20 }}
         />
         <Dropdown label="Type" onSelect={addType} options={options} />
-        <DragAndDrop label="Image" onUpload={onUpload} />
         <Footer>
           <Button
             onClick={newRecipe}

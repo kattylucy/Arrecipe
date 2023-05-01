@@ -54,7 +54,6 @@ const Drawer = styled(motion.div)(({ theme: { colors } }) => ({
   left: 0,
   backgroundColor: colors.white,
   padding: 10,
-  height: "60vh",
   width: "100%",
   boxShadow: `0px -12px 40px rgba(0, 0, 0, 0.15)`,
 }));
@@ -98,7 +97,7 @@ export const MobileFilters = ({ createFilters, filters }: FiltersProps) => {
           />
           <Drawer
             initial={{ height: 0 }}
-            animate={{ height: "60vh" }}
+            animate={{ height: "50vh" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.3 }}
           >

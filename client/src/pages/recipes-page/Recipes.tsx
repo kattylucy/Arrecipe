@@ -8,15 +8,17 @@ import { SkeletonLoader } from "./skeleton";
 interface RecipesProps {
   isLoading: boolean;
   isMobileView?: boolean;
-  recipes: Array<{
-    calories: string;
-    cookingTime: string;
-    id: number;
-    url: string;
-    name: string;
-    thumbnail: string;
-    tag: string;
-  }>;
+  recipes:
+    | Array<{
+        calories: string;
+        cookingTime: string;
+        id: number;
+        url: string;
+        name: string;
+        thumbnail: string;
+        tag: string;
+      }>
+    | any;
 }
 
 const NoResults = styled.div({

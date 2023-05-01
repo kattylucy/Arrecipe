@@ -5,13 +5,14 @@ from src.const.status_code import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
 
 recipe = Blueprint("recipe", __name__, url_prefix='/api/v1/recipes')
 
-
 @recipe.get('/')
 def get_all():
     query = request.args.get('query', '').lower()
     calories_count = request.args.get('calories_count', '').lower()
     cooking_time = request.args.get('cooking_time', '').lower()
     tags = request.args.get('tags', '').lower()
+    page = int(request.args.get('page', 1))
+    limit = int(request.args.get('limit', 10))
 
     recipes = Recipe.query
 
@@ -32,10 +33,11 @@ def get_all():
             RecipeTags.name.in_(tags)).all()]
         recipes = recipes.filter(Recipe.tag_id.in_(tag_ids))
 
-    recipes = recipes.options(db.joinedload(Recipe.tag)).all()
+    total_count = recipes.count()
+    recipes = recipes.options(db.joinedload(Recipe.tag)).offset((page-1)*limit).limit(limit).all()
     recipe_list = [get_recipe_dict(recipe) for recipe in recipes]
 
-    return jsonify({'data': recipe_list}), HTTP_200_OK
+    return jsonify({'data': recipe_list, 'total': {'total_count': total_count, 'page': page, 'limit': limit}}), HTTP_200_OK
 
 
 @recipe.post('/create')
