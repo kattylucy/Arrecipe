@@ -3,6 +3,7 @@ from src.recipe import recipe
 from src.database import db
 from flask_cors import CORS
 from flask_migrate import Migrate
+from supabase import create_client
 from src.const.status_code import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_404_NOT_FOUND
 import os
 
@@ -17,6 +18,8 @@ def create_app():
         SECRET_KEY=os.environ.get("SECRET_KEY"),
         SQLALCHEMY_DATABASE_URI=os.environ.get("SQLALCHEMY_DB_URI"),
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
+        SUPABASE_URL=os.environ.get("SUPABASE_URL"),
+        SUPABASE_KEY=os.environ.get("SUPABASE_KEY"),
         ENV=os.environ.get("FLASK_ENV", "production"),
     )
 
@@ -24,13 +27,18 @@ def create_app():
     db.init_app(app)
     migrate = Migrate(app, db)
 
+   # Create Supabase client
+    supabase = create_client(
+        app.config['SUPABASE_URL'],
+        app.config['SUPABASE_KEY']
+    )
+
     # Register blueprints
     app.register_blueprint(recipe)
 
     # Create default tags if they don't exist
-    @app.before_first_request
-    def create_default_tags():
-        with app.app_context():
+    with app.app_context():    
+        def create_default_tags():
             from src.database import RecipeTags
             default_tags = ['main_dish', 'side_dish', 'dessert', 'drinks']
             for tag_name in default_tags:
@@ -38,7 +46,7 @@ def create_app():
                 if not tag:
                     tag = RecipeTags(name=tag_name)
                     db.session.add(tag)
-            db.session.commit()
+                    db.session.commit()
 
     # Error handling
     @app.errorhandler(404)
