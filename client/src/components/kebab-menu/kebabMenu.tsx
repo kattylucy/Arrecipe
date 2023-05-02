@@ -6,7 +6,7 @@ import { Button } from "components/button/Button";
 import { Icon } from "components/icon/Icon";
 
 interface KebabMenuProps {
-  options: Array<{ name: string; id: string }>;
+  options: Array<{ name: string; id: string; event: () => void }>;
 }
 
 const KebabContainer = styled.div(({ theme: { colors } }) => ({
@@ -71,6 +71,8 @@ export const KebabMenu = ({ options }: KebabMenuProps) => {
                         ? theme.colors.warning
                         : theme.colors.black,
                   }}
+                  key={menuItem.id}
+                  onClick={menuItem.event}
                   variant="text"
                   withHover
                 >

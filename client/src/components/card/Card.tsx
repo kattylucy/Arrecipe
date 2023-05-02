@@ -1,9 +1,12 @@
+import { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import uniqueId from "lodash/uniqueId";
+import useDeleteRecipe from "queries/useDeleteRecipe";
 import { KebabMenu } from "components/kebab-menu/kebabMenu";
 import { Button } from "components/button/Button";
 import { Icon } from "components/icon/Icon";
 import { Label } from "components/UI/Texts";
+import { useToast } from "hooks/useToast";
 
 interface CardProps {
   calories: string;
@@ -15,11 +18,6 @@ interface CardProps {
   tag: string;
   isMobileView?: boolean;
 }
-
-const kebabItems = [
-  { name: "Edit", id: uniqueId() },
-  { name: "Delete", id: uniqueId() },
-];
 
 const CardContainer = styled.div<{ mobile?: boolean }>(({ mobile }) => ({
   borderRadius: 16,
@@ -99,6 +97,26 @@ export const Card = ({
   isMobileView,
   ...props
 }: CardProps) => {
+  const deleteRecipeHook = useDeleteRecipe();
+  const toast = useToast();
+
+  const deleteRecipe = useCallback(async () => {
+    try {
+      await deleteRecipeHook.mutateAsync(id);
+      toast.open(`Recipe ${name} was deleted.`);
+    } catch (error) {
+      toast.open("An error has ocurred.");
+    }
+  }, [id, deleteRecipeHook]);
+
+  const kebabItems = useMemo(
+    () => [
+      { name: "Edit", id: uniqueId() },
+      { name: "Delete", id: uniqueId(), event: () => deleteRecipe() },
+    ],
+    []
+  );
+
   return (
     <CardContainer mobile={isMobileView} {...props}>
       <a target="_blank" href={url}>

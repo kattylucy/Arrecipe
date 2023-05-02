@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify
 from src.database import Recipe, RecipeTags, db
 from src.utils import get_recipe_dict
 from src.const.status_code import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
@@ -74,3 +74,10 @@ def create():
         'status_code': 200,
         'message': 'Recipe created successfully'
     }), HTTP_200_OK
+
+@recipe.delete('/delete/<int:id>')
+def delete_recipe(id):
+    recipe = Recipe.query.get_or_404(id)
+    db.session.delete(recipe)
+    db.session.commit()
+    return jsonify({'message': 'Object deleted successfully'})

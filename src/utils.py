@@ -1,9 +1,7 @@
 import base64
 
-
 def get_thumbnail(thumbnail):
     return base64.b64encode(thumbnail).decode('utf-8')
-
 
 def get_recipe_dict(recipe):
     recipe_dict = {

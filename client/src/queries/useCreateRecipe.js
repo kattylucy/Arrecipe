@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { request } from "../utilities/request";
 
 const postData = async (recipe) => {
@@ -16,6 +16,9 @@ const postData = async (recipe) => {
 };
 
 export const useCreateRecipe = () => {
-  const createRecipeMutation = useMutation((recipe) => postData(recipe));
+  const queryClient = useQueryClient();
+  const createRecipeMutation = useMutation((recipe) => postData(recipe), {
+    onSuccess: () => queryClient.invalidateQueries(['recipes'])
+  });
   return createRecipeMutation;
 };

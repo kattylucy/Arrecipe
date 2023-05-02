@@ -41,7 +41,7 @@ const fetchData = async (filters, pageParam) => {
 };
 
 const useGetRecipes = (filter) => {
-  const query = useInfiniteQuery(["recipes", filter], ({ pageParam = 1 }) => fetchData(filter, pageParam), {
+  const query = useInfiniteQuery(["recipes"], ({ pageParam = 1 }) => fetchData(filter, pageParam), {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, allPages) => {
