@@ -43,37 +43,35 @@ const Header = styled.div({
   justifyContent: "space-between",
 });
 
-export const DragAndDrop = ({
-  label,
-  onUpload,
-  ...props
-}: DragAndDropProps) => {
-  const [isMobileView] = useWindowDimensions();
-  const [file, setFile] = useState();
+export const DragAndDrop = ({ label, onUpload, style }: DragAndDropProps) => {
+  const [image, setImage] = useState("");
 
-  const onDrop = useCallback((acceptedFiles: any) => {
-    setFile(acceptedFiles[0]);
-    onUpload(acceptedFiles[0]);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result as string);
+        onUpload(file);
+      };
+      reader.readAsDataURL(file);
+    },
+    [onUpload]
+  );
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div {...props}>
-      <Header>
-        <InputLabel>{label}</InputLabel>
-        {file && <InputLabel color="main">Remove image</InputLabel>}
-      </Header>
-      <Container draggable="true" {...getRootProps()} isActive={file}>
-        <UploadInput multiple={false} type="file" {...getInputProps()} />
-        {file ? (
-          <Img image={URL.createObjectURL(file)} />
+    <>
+      {label && <InputLabel>{label}</InputLabel>}
+      <Container {...getRootProps()} isActive={isDragActive} style={style}>
+        <UploadInput {...getInputProps()} />
+        {image ? (
+          <Img image={image} />
         ) : (
-          <Label textAlign="center" opacity={0.5} padding="70px 0px">
-            {isMobileView ? "Click here to add image" : "Drop image here"}
-          </Label>
+          <Label>Drag and drop image here</Label>
         )}
       </Container>
-    </div>
+    </>
   );
 };
