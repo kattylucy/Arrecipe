@@ -111,7 +111,7 @@ export const Card = ({
 
   const kebabItems = useMemo(
     () => [
-      { name: "Edit", id: uniqueId() },
+      { name: "Edit", id: uniqueId(), event: () => console.log("edit") },
       { name: "Delete", id: uniqueId(), event: () => deleteRecipe() },
     ],
     []
