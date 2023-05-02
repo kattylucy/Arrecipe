@@ -16,6 +16,8 @@ const ToastContainer = styled.div(({ theme: { colors } }) => ({
   right: 0,
   margin: 12,
   top: 0,
+  zIndex: 99999,
+  background: colors.white,
 }));
 
 export const Toast = ({ close, children, ...props }: ToastProps) => {

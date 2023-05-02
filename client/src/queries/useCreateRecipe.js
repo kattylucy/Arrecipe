@@ -18,7 +18,7 @@ const postData = async (recipe) => {
 export const useCreateRecipe = () => {
   const queryClient = useQueryClient();
   const createRecipeMutation = useMutation((recipe) => postData(recipe), {
-    onSuccess: () => queryClient.invalidateQueries(['recipes'])
+    // onSuccess: () => queryClient.invalidateQueries(['recipes'])
   });
   return createRecipeMutation;
 };
