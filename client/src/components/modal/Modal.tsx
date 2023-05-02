@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import useOutsideClick from "hooks/useOutsideClick";
@@ -67,6 +67,14 @@ export const Modal = ({
 }: ModalProps) => {
   const ref = useRef<HTMLDivElement>(null);
   useOutsideClick(ref, closeModal);
+
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "initial";
+    }
+  }, [visible]);
 
   if (visible) {
     return ReactDOM.createPortal(

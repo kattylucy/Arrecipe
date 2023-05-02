@@ -70,6 +70,14 @@ const Overlay = styled(motion.div)({
 export const MobileFilters = ({ createFilters, filters }: FiltersProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "initial";
+    }
+  }, [isDrawerOpen]);
+
   return (
     <FiltersContainer>
       <div>
