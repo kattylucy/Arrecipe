@@ -129,7 +129,7 @@ export const Card = ({
             textOverflow="ellipsis"
             size="extraSmall"
             overflow="hidden"
-            maxWidth={180}
+            maxWidth={isMobileView ? "100%" : 200}
             whiteSpace="nowrap"
           >
             {name}

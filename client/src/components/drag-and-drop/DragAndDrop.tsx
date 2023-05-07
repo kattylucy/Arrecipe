@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useDropzone } from "react-dropzone";
-import useWindowDimensions from "hooks/useWindowDimensions";
 import { Label, InputLabel } from "components/UI/Texts";
 
 interface DragAndDropProps {
