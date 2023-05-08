@@ -22,6 +22,7 @@ const Wrapper = styled.div({
 const Container = styled.div<{ mobile?: boolean }>(({ mobile }) => ({
   display: "flex",
   width: "100%",
+  justifyContent: "space-around",
   "& > div": {
     width: mobile ? "100%" : "30%",
   },

@@ -14,9 +14,9 @@ class RecipeTags(db.Model):
 class Recipe(db.Model):
     __tablename__ = 'recipe'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    calories_count = db.Column(db.Integer, nullable=False)
-    cooking_time = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(100), nullable=False, index=True)
+    calories_count = db.Column(db.Integer, nullable=False, index=True)
+    cooking_time = db.Column(db.Integer, nullable=False, index=True)
     url = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
