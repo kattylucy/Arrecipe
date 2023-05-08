@@ -28,11 +28,10 @@ const NoResults = styled.div({
   margin: "auto",
 });
 
-const Cards = styled.div({
+const Wrapper = styled.div({
   display: "flex",
   flexWrap: "wrap",
-  justifyContent: "space-between",
-  width: "100%",
+  justifyContent: "flex-start",
 });
 
 export const Recipes = ({ isLoading, isMobileView, recipes }: RecipesProps) => {
@@ -49,10 +48,10 @@ export const Recipes = ({ isLoading, isMobileView, recipes }: RecipesProps) => {
     );
   }
   return (
-    <Cards>
+    <Wrapper>
       {recipes.map((recipe) => (
         <Card isMobileView={isMobileView} key={recipe.id} {...recipe} />
       ))}
-    </Cards>
+    </Wrapper>
   );
 };

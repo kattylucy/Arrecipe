@@ -15,14 +15,12 @@ const StyledStack = styled(Stack)<{ mobile?: boolean }>(({ mobile }) => ({
 
 const Wrapper = styled.div({
   display: "flex",
-  justifyContent: "space-between",
   width: "100%",
   flexWrap: "wrap",
 });
 
 const Container = styled.div<{ mobile?: boolean }>(({ mobile }) => ({
   display: "flex",
-  justifyContent: "space-between",
   width: "100%",
   "& > div": {
     width: mobile ? "100%" : "30%",

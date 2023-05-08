@@ -1,8 +1,9 @@
-import { useCallback, useState, useEffect, useRef, useMemo } from "react";
+import { useCallback, useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import flatMap from "lodash/flatMap";
 import useGetRecipes from "queries/useGetRecipes";
 import { Filters } from "components/filters/Filters";
+import { Label } from "components/UI/Texts";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { Header } from "./Header";
 import { Recipes } from "./Recipes";
@@ -11,7 +12,12 @@ const BodyContainer = styled.div({
   display: "flex",
 });
 
-const MobileView = styled.div({});
+const Cards = styled.div({
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  overflow: "scroll",
+});
 
 const RecipesPage = () => {
   const [filters, setFilters] = useState({
@@ -22,7 +28,6 @@ const RecipesPage = () => {
   });
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useGetRecipes(filters);
-  const ref = useRef(null);
   const [isMobileView] = useWindowDimensions();
   const recipeList = useMemo(
     () => (data?.pages ? flatMap(data.pages) : []),
@@ -35,23 +40,28 @@ const RecipesPage = () => {
     },
     [setFilters]
   );
+  const handleScroll = useCallback(() => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (
+      scrollTop + clientHeight >= scrollHeight &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   useEffect(() => {
-    if (ref.current) {
-      const { scrollTop, scrollHeight, clientHeight } = ref.current;
-      if (
-        scrollTop + clientHeight === scrollHeight &&
-        hasNextPage &&
-        !isFetchingNextPage
-      ) {
-        fetchNextPage();
-      }
-    }
-  }, [ref, fetchNextPage, hasNextPage, isFetchingNextPage]);
+    document.addEventListener("scroll", handleScroll);
+
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
   if (isMobileView) {
     return (
-      <MobileView ref={ref}>
+      <div>
         <Header />
         <Recipes
           isMobileView={isMobileView}
@@ -64,16 +74,23 @@ const RecipesPage = () => {
           filters={filters}
           sticky
         />
-      </MobileView>
+      </div>
     );
   }
 
   return (
     <>
       <Header />
-      <BodyContainer ref={ref}>
+      <BodyContainer>
         <Filters createFilters={createFilters} filters={filters} sticky />
-        <Recipes isLoading={isLoading} recipes={recipeList} />
+        <Cards onScroll={handleScroll}>
+          <Recipes isLoading={isLoading} recipes={recipeList} />
+          {isFetchingNextPage && (
+            <Label color="main" fontWeight={600} margin={12} textAlign="center">
+              Loading more recipes...
+            </Label>
+          )}
+        </Cards>
       </BodyContainer>
     </>
   );

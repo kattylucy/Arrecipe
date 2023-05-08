@@ -23,6 +23,7 @@ const CardContainer = styled.div<{ mobile?: boolean }>(({ mobile }) => ({
   borderRadius: 16,
   margin: mobile ? 20 : "18px 0px 0px 18px",
   width: mobile ? "100%" : "31%",
+  flex: 1,
 }));
 
 const Thumbnail = styled.div<{ url: string }>(({ url }) => ({
