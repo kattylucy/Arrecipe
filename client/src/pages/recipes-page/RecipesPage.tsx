@@ -82,7 +82,7 @@ const RecipesPage = () => {
     <>
       <Header />
       <BodyContainer>
-        <Filters createFilters={createFilters} filters={filters} sticky />
+        {/* <Filters createFilters={createFilters} filters={filters} sticky /> */}
         <Cards onScroll={handleScroll}>
           <Recipes isLoading={isLoading} recipes={recipeList} />
           {isFetchingNextPage && (
