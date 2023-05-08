@@ -86,8 +86,8 @@ const RecipesPage = () => {
         <Cards onScroll={handleScroll}>
           <Recipes isLoading={isLoading} recipes={recipeList} />
           {isFetchingNextPage && (
-            <Label color="main" fontWeight={600} margin={12} textAlign="center">
-              Loading more recipes...
+            <Label fontWeight={600} margin={20} textAlign="center">
+              Loading...
             </Label>
           )}
         </Cards>

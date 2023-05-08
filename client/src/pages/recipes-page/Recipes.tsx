@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import isEmpty from "lodash/isEmpty";
+import { AnimatePresence } from "framer-motion";
 import { Card } from "components/card/Card";
 import { Icon } from "components/icon/Icon";
 import { H3 } from "components/UI/Texts";
@@ -50,7 +51,9 @@ export const Recipes = ({ isLoading, isMobileView, recipes }: RecipesProps) => {
   return (
     <Wrapper>
       {recipes.map((recipe) => (
-        <Card isMobileView={isMobileView} key={recipe.id} {...recipe} />
+        <AnimatePresence key={`${recipe.name}-${recipe.id}`}>
+          <Card isMobileView={isMobileView} {...recipe} />
+        </AnimatePresence>
       ))}
     </Wrapper>
   );

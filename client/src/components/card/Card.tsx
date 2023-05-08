@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 import uniqueId from "lodash/uniqueId";
 import useDeleteRecipe from "queries/useDeleteRecipe";
@@ -19,12 +20,13 @@ interface CardProps {
   isMobileView?: boolean;
 }
 
-const CardContainer = styled.div<{ mobile?: boolean }>(({ mobile }) => ({
-  borderRadius: 16,
-  margin: mobile ? 20 : "18px 0px 0px 18px",
-  width: mobile ? "100%" : "31%",
-  flex: 1,
-}));
+const CardContainer = styled(motion.div)<{ mobile?: boolean }>(
+  ({ mobile }) => ({
+    borderRadius: 16,
+    margin: mobile ? 20 : "18px 0px 0px 18px",
+    width: mobile ? "100%" : "31%",
+  })
+);
 
 const Thumbnail = styled.div<{ url: string }>(({ url }) => ({
   borderTopLeftRadius: 16,
@@ -119,7 +121,13 @@ export const Card = ({
   );
 
   return (
-    <CardContainer mobile={isMobileView} {...props}>
+    <CardContainer
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      mobile={isMobileView}
+      {...props}
+    >
       <a target="_blank" href={url}>
         <Thumbnail url={`data:image/jpeg;base64,${thumbnail}`} />
       </a>

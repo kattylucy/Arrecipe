@@ -30,7 +30,7 @@ const transformData = (recipes) =>
   }
 
 const fetchData = async (filters, pageParam) => {
-  // console.log(filters, pageParam)
+  console.log(filters, pageParam)
   try {
     const data = await request("GET", transformUrl(filters, pageParam));
     return isEmpty(data.data) ? [] : transformData(data.data)
@@ -39,17 +39,21 @@ const fetchData = async (filters, pageParam) => {
     // Handle error
   }
 };
-
 const useGetRecipes = (filter) => {
-  const query = useInfiniteQuery(["recipes"], ({ pageParam = 1 }) => fetchData(filter, pageParam), {
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage =
+  const query = useInfiniteQuery(
+    ["recipes", filter],
+    ({ pageParam = 1 }) => fetchData(filter, pageParam),
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage =
           lastPage.length === LIMIT ? allPages.length + 1 : undefined;
         return nextPage;
-    }
-  });
+      }
+    },
+    [filter]
+  );
 
   return { ...query };
 };
