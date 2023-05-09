@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { uniqueId } from "lodash";
 import { ToastContext } from "./ToastContext";
 import { Toast } from "./Toast";
 
@@ -12,29 +13,20 @@ interface ToastContent {
   content: string;
 }
 
-// Create a random ID
-const generateUEID = () => {
-  let first: number = (Math.random() * 46656) | 0;
-  let second: number = (Math.random() * 46656) | 0;
-  first = parseFloat(("000" + first.toString(36)).slice(-3));
-  second = parseFloat(("000" + second.toString(36)).slice(-3));
-
-  return first + second;
-};
-
 export const ToastProvider = ({ children, ...props }: Props) => {
   const [toasts, setToasts] = useState<ToastContent[]>([]);
 
   const open = (content: string) =>
     setToasts((currentToasts) => [
       ...currentToasts,
-      { id: generateUEID(), content },
+      { id: Number(uniqueId()), content },
     ]);
 
-  const close = (id: number) =>
+  const close = (id: number) => {
     setToasts((currentToasts) =>
       currentToasts.filter((toast) => toast.id !== id)
     );
+  };
 
   const contextValue = { open };
 
@@ -44,7 +36,7 @@ export const ToastProvider = ({ children, ...props }: Props) => {
       {createPortal(
         <div className="toasts-wrapper">
           {toasts.map((toast) => (
-            <Toast key={toast.id} close={() => close(toast.id)}>
+            <Toast key={toast.id} close={close} id={toast.id}>
               {toast.content}
             </Toast>
           ))}

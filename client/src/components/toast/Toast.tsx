@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import { Label } from "components/UI/Texts";
-import { useTimeout } from "hooks/useTimeout";
 
 interface ToastProps {
-  close: () => void;
+  close: (id: number) => void;
   children: React.ReactNode;
+  id: number;
 }
 
 const ToastContainer = styled.div(({ theme: { colors } }) => ({
@@ -20,8 +21,11 @@ const ToastContainer = styled.div(({ theme: { colors } }) => ({
   background: colors.white,
 }));
 
-export const Toast = ({ close, children, ...props }: ToastProps) => {
-  useTimeout(close, 5000);
+export const Toast = ({ close, children, id, ...props }: ToastProps) => {
+  useEffect(() => {
+    const timer = setTimeout(() => close(id), 5000);
+    return () => clearTimeout(timer);
+  }, [close, id]);
   return (
     <ToastContainer {...props}>
       <Label>{children}</Label>

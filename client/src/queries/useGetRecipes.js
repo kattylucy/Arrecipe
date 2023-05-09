@@ -32,7 +32,6 @@ const transformData = (recipes) =>
 const fetchData = async (filters, pageParam) => {
   try {
     const data = await request("GET", transformUrl(filters, pageParam));
-    console.log(data)
     return isEmpty(data.data) ? [] : transformData(data.data)
   } catch (error) {
     console.log(error);

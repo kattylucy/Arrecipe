@@ -14,8 +14,7 @@ const postData = async (id) => {
 const useDeleteRecipe = () => {
   const queryClient = useQueryClient();
   const deleteRecipeMutation = useMutation((id) => postData(id), {
-    onSuccess: () => queryClient.invalidateQueries(['recipes'])
-  });
+    onSuccess: () => queryClient.invalidateQueries(['recipes'], { refetchInactive: true })});
   return deleteRecipeMutation;
 };
 
