@@ -38,6 +38,12 @@ const Message = styled.div(({ theme: { colors } }) => ({
 }));
 
 export const Toast = ({ close, message, type, id, ...props }: ToastProps) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      close(id);
+    }, 5000);
+    return clearTimeout(timer);
+  }, [id, close]);
   return (
     <ToastContainer {...props}>
       <Message>
