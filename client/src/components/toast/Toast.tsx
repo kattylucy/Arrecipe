@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import { Label } from "components/UI/Texts";
+import { Label, H3 } from "components/UI/Texts";
+import { Button } from "components/button/Button";
+import { Icon } from "components/icon/Icon";
 
 interface ToastProps {
   close: (id: number) => void;
-  children: React.ReactNode;
   id: number;
+  message: string;
+  type: string;
 }
 
 const ToastContainer = styled.div(({ theme: { colors } }) => ({
@@ -19,16 +22,33 @@ const ToastContainer = styled.div(({ theme: { colors } }) => ({
   top: 0,
   zIndex: 99999,
   background: colors.white,
+  display: "flex",
+  alignItems: "center",
+  minWidth: "20vw",
 }));
 
-export const Toast = ({ close, children, id, ...props }: ToastProps) => {
-  useEffect(() => {
-    const timer = setTimeout(() => close(id), 5000);
-    return () => clearTimeout(timer);
-  }, [close, id]);
+const CloseButton = styled.div({
+  marginLeft: 12,
+});
+
+const Message = styled.div(({ theme: { colors } }) => ({
+  width: "90%",
+  borderLeft: `5px solid ${colors.main}`,
+  paddingLeft: 12,
+}));
+
+export const Toast = ({ close, message, type, id, ...props }: ToastProps) => {
   return (
     <ToastContainer {...props}>
-      <Label>{children}</Label>
+      <Message>
+        <H3 fontWeight={600}>{type === "success" ? "Success!" : "Error"}</H3>
+        <Label size="small">{message}</Label>
+      </Message>
+      <CloseButton>
+        <Button onClick={() => close(id)} variant="icon">
+          <Icon icon="closed" styles={{ width: 12, height: 12 }} />
+        </Button>
+      </CloseButton>
     </ToastContainer>
   );
 };

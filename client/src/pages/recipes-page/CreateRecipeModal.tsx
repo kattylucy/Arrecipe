@@ -81,10 +81,10 @@ export const CreateRecipeModal = ({
       }
       formData.append("thumbnail", upload);
       await createRecipe.mutateAsync(formData);
-      toast.open("New recipe was created.");
+      toast.open({ message: "Recipe was created", type: "success" });
       closeModal();
     } catch (error) {
-      toast.open("An error has ocurred.");
+      toast.open({ message: error, type: "error" });
     }
   }, [closeModal, recipe, createRecipe, toast, upload]);
 

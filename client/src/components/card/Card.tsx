@@ -106,9 +106,9 @@ export const Card = ({
   const deleteRecipe = useCallback(async () => {
     try {
       await deleteRecipeHook.mutateAsync(id);
-      toast.open(`Recipe ${name} was deleted.`);
+      toast.open({ message: "Recipe was deleted", type: "success" });
     } catch (error) {
-      toast.open("An error has ocurred.");
+      toast.open({ message: error, type: "error" });
     }
   }, [id, deleteRecipeHook]);
 

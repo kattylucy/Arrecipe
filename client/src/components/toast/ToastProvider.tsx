@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { uniqueId } from "lodash";
 import { ToastContext } from "./ToastContext";
@@ -8,19 +8,23 @@ interface Props {
   children: React.ReactNode;
 }
 
-interface ToastContent {
+type Toast = {
   id: number;
-  content: string;
-}
+  message: string;
+  type: string;
+};
 
 export const ToastProvider = ({ children, ...props }: Props) => {
-  const [toasts, setToasts] = useState<ToastContent[]>([]);
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const open = (content: string) =>
-    setToasts((currentToasts) => [
-      ...currentToasts,
-      { id: Number(uniqueId()), content },
-    ]);
+  const open = useCallback(
+    (toast: Toast) => {
+      const id = Number(uniqueId());
+      const { message, type } = toast;
+      setToasts((prevToasts) => [...prevToasts, { id, message, type }]);
+    },
+    [setToasts]
+  );
 
   const close = (id: number) => {
     setToasts((currentToasts) =>
@@ -36,9 +40,7 @@ export const ToastProvider = ({ children, ...props }: Props) => {
       {createPortal(
         <div className="toasts-wrapper">
           {toasts.map((toast) => (
-            <Toast key={toast.id} close={close} id={toast.id}>
-              {toast.content}
-            </Toast>
+            <Toast key={toast.id} close={close} {...toast} />
           ))}
         </div>,
         document.body
