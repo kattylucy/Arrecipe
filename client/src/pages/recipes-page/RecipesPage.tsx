@@ -10,6 +10,7 @@ import { Recipes } from "./Recipes";
 
 const BodyContainer = styled.div({
   display: "flex",
+  minHeight: "90vh",
 });
 
 const Cards = styled.div({

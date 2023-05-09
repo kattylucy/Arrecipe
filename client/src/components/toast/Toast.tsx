@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 import { Label, H3 } from "components/UI/Texts";
 import { Button } from "components/button/Button";
 import { Icon } from "components/icon/Icon";
@@ -11,7 +12,7 @@ interface ToastProps {
   type: string;
 }
 
-const ToastContainer = styled.div(({ theme: { colors } }) => ({
+const ToastContainer = styled(motion.div)(({ theme: { colors } }) => ({
   border: `1px solid ${colors.border}`,
   borderRadius: 8,
   boxShadow: "0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1)",
@@ -45,7 +46,12 @@ export const Toast = ({ close, message, type, id, ...props }: ToastProps) => {
     return clearTimeout(timer);
   }, [id, close]);
   return (
-    <ToastContainer {...props}>
+    <ToastContainer
+      initial={{ opacity: 0, y: 50, scale: 0.3 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 20, scale: 0.5 }}
+      {...props}
+    >
       <Message>
         <H3 fontWeight={600}>{type === "success" ? "Success!" : "Error"}</H3>
         <Label size="small">{message}</Label>
