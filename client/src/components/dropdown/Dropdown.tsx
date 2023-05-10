@@ -11,6 +11,7 @@ interface DropdownMenuProps {
   options: Array<{ name: string; id: string }>;
   onSelect: (value: { id: string; name: string }) => void;
   placeholder?: string;
+  value?: string;
 }
 
 const DropdownContainer = styled.div(({ theme: { colors } }) => ({
@@ -59,14 +60,18 @@ export const Dropdown = ({
   options,
   onSelect,
   placeholder,
+  value,
   ...props
 }: DropdownMenuProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const defaultValue = options.filter((option) => option.id === value);
   const [visible, setIsVisible] = useState(false);
   const [selected, setSelected] = useState<{ name: string; id: string }>({
-    name: "",
-    id: "",
+    name: defaultValue[0]?.name || "",
+    id: defaultValue[0]?.id || "",
   });
+
+  console.log(defaultValue);
 
   useOutsideClick(ref, () => setIsVisible(false));
 

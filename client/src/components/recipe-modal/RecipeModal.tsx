@@ -159,7 +159,12 @@ export const RecipeModal = ({
           style={{ marginBottom: 20 }}
           value={recipe.url}
         />
-        <Dropdown label="Type" onSelect={addType} options={options} />
+        <Dropdown
+          label="Type"
+          onSelect={addType}
+          options={options}
+          value={tag}
+        />
         <Footer>
           <Button
             onClick={newRecipe}

@@ -68,7 +68,7 @@ export const DragAndDrop = ({ label, onUpload, style }: DragAndDropProps) => {
         {image ? (
           <Img image={image} />
         ) : (
-          <Label>Drag and drop image here</Label>
+          <Label opacity={0.5}>Add image here</Label>
         )}
       </Container>
     </>
