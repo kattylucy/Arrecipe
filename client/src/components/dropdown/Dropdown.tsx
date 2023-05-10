@@ -71,8 +71,6 @@ export const Dropdown = ({
     id: defaultValue[0]?.id || "",
   });
 
-  console.log(defaultValue);
-
   useOutsideClick(ref, () => setIsVisible(false));
 
   const select = useCallback(

@@ -17,7 +17,7 @@ const ToastContainer = styled(motion.div)(({ theme: { colors } }) => ({
   borderRadius: 8,
   boxShadow: "0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1)",
   padding: 12,
-  position: "absolute",
+  position: "fixed",
   right: 0,
   margin: 12,
   top: 0,
@@ -45,6 +45,7 @@ export const Toast = ({ close, message, type, id, ...props }: ToastProps) => {
     }, 5000);
     return clearTimeout(timer);
   }, [id, close]);
+
   return (
     <ToastContainer
       initial={{ opacity: 0, y: 50, scale: 0.3 }}

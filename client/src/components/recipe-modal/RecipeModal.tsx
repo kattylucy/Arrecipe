@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useCreateRecipe } from "queries/useCreateRecipe";
+import { useUpdateRecipe } from "queries/useUpdateRecipe";
 import { Modal } from "components/modal/Modal";
 import { TextInput } from "components/text-input/TextInput";
 import { Button } from "components/button/Button";
@@ -69,6 +70,7 @@ export const RecipeModal = ({
   });
   const [upload, setUpload] = useState("");
   const createRecipe = useCreateRecipe();
+  const updateRecipe = useUpdateRecipe();
   const toast = useToast();
 
   const addValue = useCallback(
@@ -89,29 +91,33 @@ export const RecipeModal = ({
 
   const onUpload = useCallback(
     (image) => {
-      console.log(image, thumbnail);
       setUpload(image);
     },
     [setRecipe, recipe]
   );
 
   const newRecipe = useCallback(async () => {
-    try {
-      const formData = new FormData();
-      for (const key in recipe) {
-        if (recipe.hasOwnProperty(key)) {
-          const value = recipe[key];
-          formData.append(key, value);
+    if (isEditing) {
+      await updateRecipe.mutateAsync({ id, recipe });
+      toast.open({ message: "Recipe was updated", type: "success" });
+    } else {
+      try {
+        const formData = new FormData();
+        for (const key in recipe) {
+          if (recipe.hasOwnProperty(key)) {
+            const value = recipe[key];
+            formData.append(key, value);
+          }
         }
+        formData.append("thumbnail", upload);
+        await createRecipe.mutateAsync(formData);
+        toast.open({ message: "Recipe was created", type: "success" });
+      } catch (error) {
+        toast.open({ message: error, type: "error" });
       }
-      formData.append("thumbnail", upload);
-      await createRecipe.mutateAsync(formData);
-      toast.open({ message: "Recipe was created", type: "success" });
-      closeModal();
-    } catch (error) {
-      toast.open({ message: error, type: "error" });
     }
-  }, [closeModal, recipe, createRecipe, toast, upload]);
+    closeModal();
+  }, [closeModal, recipe, createRecipe, toast, upload, id]);
 
   return (
     <Modal

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from src.database import Recipe, RecipeTags, db
 from src.utils import get_recipe_dict
-from src.const.status_code import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
+from src.const.status_code import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR, HTTP_404_NOT_FOUND
 
 recipe = Blueprint("recipe", __name__, url_prefix='/api/v1/recipes')
 
@@ -80,4 +80,22 @@ def delete_recipe(id):
     recipe = Recipe.query.get_or_404(id)
     db.session.delete(recipe)
     db.session.commit()
-    return jsonify({'message': 'Object deleted successfully'})
+    return jsonify({'message': 'Recipe deleted successfully'})
+
+@recipe.put('/recipe/<int:id>')
+def edit_recipe(id):
+    recipe = Recipe.query.get_or_404(id)
+
+    if recipe:
+        data = request.json
+        recipe.name = data.get('name')
+        recipe.cooking_time = data.get('cooking_time')
+        recipe.calories_count = data.get('calories_count')
+        recipe.tag_name = data.get('tag')
+        recipe.url = data.get('url')
+
+        db.session.commit()
+
+        return jsonify({'message': 'Recipe updated successfully'}), HTTP_200_OK
+    else:
+        return jsonify({'error': 'Recipe not found'}), HTTP_404_NOT_FOUND

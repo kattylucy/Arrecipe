@@ -163,6 +163,7 @@ export const Card = ({
         calories={calories}
         cookingTime={cookingTime}
         isEditing
+        id={id}
         url={url}
         name={name}
         thumbnail={thumbnail}
