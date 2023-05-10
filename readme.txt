@@ -9,3 +9,7 @@ Unit test
 Animations
 User creation profile
 mailers 
+Better organization of the frontend
+Calendar view
+Clean up the design
+Workout view ideas
