@@ -60,14 +60,16 @@ export const RecipeModal = ({
   closeModal,
   visible,
 }: CreateRecipeModalProps) => {
-  const [recipe, setRecipe] = useState({
-    calories_count: calories,
-    cooking_time: cookingTime,
-    id,
-    url,
-    name,
-    tag,
-  });
+  const [recipe, setRecipe] = useState(
+    {
+      calories_count: calories,
+      cooking_time: cookingTime,
+      id,
+      url,
+      name,
+      tag,
+    } || {}
+  );
   const [upload, setUpload] = useState("");
   const createRecipe = useCreateRecipe();
   const updateRecipe = useUpdateRecipe();
@@ -98,6 +100,8 @@ export const RecipeModal = ({
 
   const newRecipe = useCallback(async () => {
     if (isEditing) {
+      closeModal();
+      toast.open({ message: "Your recipe is updating", type: "info" });
       await updateRecipe.mutateAsync({ id, recipe });
       toast.open({ message: "Recipe was updated", type: "success" });
     } else {
@@ -116,7 +120,7 @@ export const RecipeModal = ({
         toast.open({ message: error, type: "error" });
       }
     }
-    closeModal();
+    setRecipe({});
   }, [closeModal, recipe, createRecipe, toast, upload, id]);
 
   return (
@@ -177,7 +181,7 @@ export const RecipeModal = ({
             styles={{ marginTop: 20, height: 56, width: "100%" }}
             variant="contained"
           >
-            {isEditing ? "Edit" : "Create"}
+            {isEditing ? "Edit Recipe" : "Create Recipe"}
           </Button>
         </Footer>
       </Body>

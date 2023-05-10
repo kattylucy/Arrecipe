@@ -12,6 +12,12 @@ interface ToastProps {
   type: string;
 }
 
+const types = {
+  success: "Success!",
+  error: "Oh no!",
+  info: "We are working",
+};
+
 const ToastContainer = styled(motion.div)(({ theme: { colors } }) => ({
   border: `1px solid ${colors.border}`,
   borderRadius: 8,
@@ -54,7 +60,7 @@ export const Toast = ({ close, message, type, id, ...props }: ToastProps) => {
       {...props}
     >
       <Message>
-        <H3 fontWeight={600}>{type === "success" ? "Success!" : "Error"}</H3>
+        <H3 fontWeight={600}>{types[type]}</H3>
         <Label size="small">{message}</Label>
       </Message>
       <CloseButton>

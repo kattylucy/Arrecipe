@@ -49,7 +49,6 @@ def create():
     url = request.form.get('url')
     thumbnail = request.files['thumbnail']
 
-    # Get the RecipeTag object by name or create it if it doesn't exist
     tag = RecipeTags.query.filter_by(name=tag_name).first()
     if tag is None:
         tag = RecipeTags(name=tag_name)
@@ -63,13 +62,11 @@ def create():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        # Handle the exception, e.g., return an error response
         return jsonify({
             'status_code': 500,
             'message': 'Internal Server Error'
         }), HTTP_500_INTERNAL_SERVER_ERROR
 
-     # Return a success response
     return jsonify({
         'status_code': 200,
         'message': 'Recipe created successfully'

@@ -1,7 +1,8 @@
 import { useCallback, useMemo } from "react";
-import { motion } from "framer-motion";
 import styled from "styled-components";
 import uniqueId from "lodash/uniqueId";
+import { Tooltip } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import useDeleteRecipe from "queries/useDeleteRecipe";
 import useModal from "hooks/useModal";
 import { useToast } from "hooks/useToast";
@@ -136,16 +137,18 @@ export const Card = ({
       </a>
       <CardIcons>
         <TopRow>
-          <Label
-            fontWeight={600}
-            textOverflow="ellipsis"
-            size="extraSmall"
-            overflow="hidden"
-            maxWidth={isMobileView ? "100%" : 200}
-            whiteSpace="nowrap"
-          >
-            {name}
-          </Label>
+          <Tooltip hasArrow label={name} isDisabled={name.length > 200}>
+            <Label
+              fontWeight={600}
+              textOverflow="ellipsis"
+              size="extraSmall"
+              overflow="hidden"
+              maxWidth={isMobileView ? "100%" : 200}
+              whiteSpace="nowrap"
+            >
+              {name}
+            </Label>
+          </Tooltip>
           <Icons>
             <Button disabled variant="icon" withHover>
               <Icon icon="calendarAdd" />
