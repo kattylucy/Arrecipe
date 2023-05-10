@@ -7,6 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   placeholder: string;
   onChange: (e: any) => void;
+  value?: any;
 }
 
 const InputContainer = styled.div({
@@ -32,6 +33,7 @@ export const TextInput = ({
   label,
   onChange,
   placeholder,
+  value,
   ...props
 }: InputProps) => (
   <InputContainer {...props}>
@@ -42,6 +44,7 @@ export const TextInput = ({
       placeholder={placeholder}
       onChange={onChange}
       type="text"
+      value={value}
     />
   </InputContainer>
 );

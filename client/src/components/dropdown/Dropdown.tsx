@@ -30,6 +30,9 @@ const DropdownWrapper = styled.div(({ theme: { colors } }) => ({
   marginTop: 4,
   width: "100%",
   zIndex: 9,
+  marginBottom: 12,
+  maxHeight: 120,
+  overflow: "scroll",
   "& > button:first-of-type": {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
@@ -48,6 +51,7 @@ const Container = styled.div(({ theme: { colors } }) => ({
   padding: 12,
   fontSize: 12,
   justifyContent: "space-between",
+  marginTop: 6,
 }));
 
 export const Dropdown = ({

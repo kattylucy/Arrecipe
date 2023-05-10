@@ -16,6 +16,14 @@ const options = [
 ];
 
 type CreateRecipeModalProps = {
+  calories?: string;
+  cookingTime?: string;
+  id?: number;
+  isEditing?: boolean;
+  url?: string;
+  name?: string;
+  thumbnail?: string;
+  tag?: string;
   closeModal: () => void;
   visible: boolean;
 };
@@ -36,13 +44,29 @@ const Footer = styled.div(({ theme: { colors } }) => ({
   padding: "12px 0px",
   position: "sticky",
   width: "100%",
+  marginTop: 20,
 }));
 
-export const CreateRecipeModal = ({
+export const RecipeModal = ({
+  calories,
+  cookingTime,
+  id,
+  isEditing = false,
+  url,
+  name,
+  thumbnail,
+  tag,
   closeModal,
   visible,
 }: CreateRecipeModalProps) => {
-  const [recipe, setRecipe] = useState({});
+  const [recipe, setRecipe] = useState({
+    calories_count: calories,
+    cooking_time: cookingTime,
+    id,
+    url,
+    name,
+    tag,
+  });
   const [upload, setUpload] = useState("");
   const createRecipe = useCreateRecipe();
   const toast = useToast();
@@ -65,6 +89,7 @@ export const CreateRecipeModal = ({
 
   const onUpload = useCallback(
     (image) => {
+      console.log(image, thumbnail);
       setUpload(image);
     },
     [setRecipe, recipe]
@@ -96,16 +121,19 @@ export const CreateRecipeModal = ({
       styles={{ maxHeight: "90vh" }}
     >
       <Body>
-        <DragAndDrop
-          label="Image"
-          onUpload={onUpload}
-          style={{ marginBottom: 20 }}
-        />
+        {!isEditing && (
+          <DragAndDrop
+            label="Image"
+            onUpload={onUpload}
+            style={{ marginBottom: 20 }}
+          />
+        )}
         <TextInput
           id="name"
           label="Name"
           onChange={addValue}
           placeholder="Eg. “Spicy Chicken Pasta”"
+          value={recipe.name}
         />
         <InputGroup>
           <TextInput
@@ -113,12 +141,14 @@ export const CreateRecipeModal = ({
             label="Kcal per serving"
             onChange={addValue}
             placeholder="Eg. “524”"
+            value={recipe.calories_count}
           />
           <TextInput
             id="cooking_time"
             label="Time to prepare"
             onChange={addValue}
             placeholder="Eg. “32”"
+            value={recipe.cooking_time}
           />
         </InputGroup>
         <TextInput
@@ -127,6 +157,7 @@ export const CreateRecipeModal = ({
           onChange={addValue}
           placeholder="https://instagram.com/url"
           style={{ marginBottom: 20 }}
+          value={recipe.url}
         />
         <Dropdown label="Type" onSelect={addType} options={options} />
         <Footer>
@@ -135,7 +166,7 @@ export const CreateRecipeModal = ({
             styles={{ marginTop: 20, height: 56, width: "100%" }}
             variant="contained"
           >
-            Create
+            {isEditing ? "Edit" : "Create"}
           </Button>
         </Footer>
       </Body>

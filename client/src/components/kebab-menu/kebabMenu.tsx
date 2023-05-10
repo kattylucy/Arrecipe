@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import theme from "theme/theme";
 import useOutsideClick from "hooks/useOutsideClick";
@@ -51,6 +51,15 @@ export const KebabMenu = ({ options }: KebabMenuProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setIsVisible] = useState(false);
   useOutsideClick(ref, () => setIsVisible(false));
+
+  const onClick = useCallback(
+    (event) => {
+      event();
+      setIsVisible(false);
+    },
+    [setIsVisible]
+  );
+
   return (
     <KebabContainer>
       <Button onClick={() => setIsVisible(!visible)} variant="icon" withHover>
@@ -72,7 +81,7 @@ export const KebabMenu = ({ options }: KebabMenuProps) => {
                         : theme.colors.black,
                   }}
                   key={menuItem.id}
-                  onClick={menuItem.event}
+                  onClick={() => onClick(menuItem.event)}
                   variant="text"
                   withHover
                 >

@@ -4,7 +4,7 @@ import { Tabs } from "components/tabs/Tabs";
 import { Button } from "components/button/Button";
 import useModal from "hooks/useModal";
 import useWindowDimensions from "hooks/useWindowDimensions";
-import { CreateRecipeModal } from "./CreateRecipeModal";
+import { RecipeModal } from "components/recipe-modal/RecipeModal";
 
 const TabContent = [
   {
@@ -91,7 +91,7 @@ export const Header = () => {
         </Button>
         <Icon icon="plus" />
       </CreateRecipe>
-      <CreateRecipeModal closeModal={closeModal} visible={visible} />
+      <RecipeModal closeModal={closeModal} visible={visible} />
     </NavBarContainer>
   );
 };

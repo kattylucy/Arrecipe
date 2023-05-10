@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import uniqueId from "lodash/uniqueId";
 import useDeleteRecipe from "queries/useDeleteRecipe";
+import useModal from "hooks/useModal";
+import { useToast } from "hooks/useToast";
 import { KebabMenu } from "components/kebab-menu/kebabMenu";
 import { Button } from "components/button/Button";
 import { Icon } from "components/icon/Icon";
 import { Label } from "components/UI/Texts";
-import { useToast } from "hooks/useToast";
+import { RecipeModal } from "components/recipe-modal/RecipeModal";
 
 interface CardProps {
   calories: string;
@@ -100,6 +102,7 @@ export const Card = ({
   isMobileView,
   ...props
 }: CardProps) => {
+  const [visible, openModal, closeModal] = useModal();
   const deleteRecipeHook = useDeleteRecipe();
   const toast = useToast();
 
@@ -114,10 +117,10 @@ export const Card = ({
 
   const kebabItems = useMemo(
     () => [
-      { name: "Edit", id: uniqueId(), event: () => console.log("edit") },
+      { name: "Edit", id: uniqueId(), event: () => openModal() },
       { name: "Delete", id: uniqueId(), event: () => deleteRecipe() },
     ],
-    []
+    [openModal, deleteRecipe]
   );
 
   return (
@@ -156,6 +159,17 @@ export const Card = ({
           <Details icon="recipes" label={tag} opacity="0.5" />
         </BottomRow>
       </CardIcons>
+      <RecipeModal
+        calories={calories}
+        cookingTime={cookingTime}
+        isEditing
+        url={url}
+        name={name}
+        thumbnail={thumbnail}
+        tag={tag}
+        closeModal={closeModal}
+        visible={visible}
+      />
     </CardContainer>
   );
 };
