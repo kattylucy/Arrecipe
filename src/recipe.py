@@ -39,7 +39,6 @@ def get_all():
 
     return jsonify({'data': recipe_list, 'total': {'total_count': total_count, 'page': page, 'limit': limit}}), HTTP_200_OK
 
-
 @recipe.post('/create')
 def create():
     calories_count = request.form.get('calories_count')
@@ -47,7 +46,7 @@ def create():
     name = request.form.get('name')
     tag_name = request.form.get('tag')
     url = request.form.get('url')
-    thumbnail = request.files['thumbnail']
+    thumbnail = request.files.get('thumbnail')
 
     tag = RecipeTags.query.filter_by(name=tag_name).first()
     if tag is None:
@@ -55,7 +54,10 @@ def create():
         db.session.add(tag)
 
     recipe = Recipe(name=name, calories_count=calories_count,
-                    cooking_time=cooking_time, tag=tag, url=url, thumbnail=thumbnail.read())
+                    cooking_time=cooking_time, tag=tag, url=url)
+    
+    if thumbnail is not None:
+        recipe.thumbnail = request.files['thumbnail'].read()
 
     try:
         db.session.add(recipe)

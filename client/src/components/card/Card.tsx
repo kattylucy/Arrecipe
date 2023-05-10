@@ -11,6 +11,7 @@ import { Button } from "components/button/Button";
 import { Icon } from "components/icon/Icon";
 import { Label } from "components/UI/Texts";
 import { RecipeModal } from "components/recipe-modal/RecipeModal";
+import defaultThumbnail from "../../assets/defaultThumbnail.png";
 
 interface CardProps {
   calories: string;
@@ -133,7 +134,11 @@ export const Card = ({
       {...props}
     >
       <a target="_blank" href={url}>
-        <Thumbnail url={`data:image/jpeg;base64,${thumbnail}`} />
+        <Thumbnail
+          url={
+            thumbnail ? `data:image/jpeg;base64,${thumbnail}` : defaultThumbnail
+          }
+        />
       </a>
       <CardIcons>
         <TopRow>

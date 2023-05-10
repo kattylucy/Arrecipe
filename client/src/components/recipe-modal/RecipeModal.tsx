@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useCreateRecipe } from "queries/useCreateRecipe";
 import { useUpdateRecipe } from "queries/useUpdateRecipe";
@@ -32,7 +32,6 @@ type CreateRecipeModalProps = {
 interface RecipeType {
   calories_count?: string;
   cooking_time?: string;
-  id?: number;
   url?: string;
   name?: string;
   thumbnail?: string;
@@ -70,17 +69,21 @@ export const RecipeModal = ({
   visible,
 }: CreateRecipeModalProps) => {
   const [recipe, setRecipe] = useState<RecipeType>({
-    calories_count: calories || "",
-    cooking_time: cookingTime || "",
-    id: id || undefined,
-    url: url || "",
-    name: name || "",
-    tag: tag || "",
+    calories_count: calories ?? "",
+    cooking_time: cookingTime ?? "",
+    url: url ?? "",
+    name: name ?? "",
+    tag: tag ?? "",
   });
   const [upload, setUpload] = useState("");
   const createRecipe = useCreateRecipe();
   const updateRecipe = useUpdateRecipe();
   const toast = useToast();
+
+  const isDisabled = useMemo(
+    () => Object.values(recipe).some((x) => x === ""),
+    [recipe]
+  );
 
   const addValue = useCallback(
     (e: any) => {
@@ -120,7 +123,9 @@ export const RecipeModal = ({
             formData.append(key, value);
           }
         }
-        formData.append("thumbnail", upload);
+        if (upload) {
+          formData.append("thumbnail", upload);
+        }
         toast.open({ message: "We are creating your recipe", type: "info" });
         await createRecipe.mutateAsync(formData);
         toast.open({ message: "Recipe was created", type: "success" });
@@ -135,6 +140,7 @@ export const RecipeModal = ({
     <Modal
       closeModal={closeModal}
       title="New recipe"
+      key={id}
       visible={visible}
       styles={{ maxHeight: "90vh" }}
     >
@@ -185,6 +191,7 @@ export const RecipeModal = ({
         />
         <Footer>
           <Button
+            disabled={isDisabled}
             onClick={newRecipe}
             styles={{ marginTop: 20, height: 56, width: "100%" }}
             variant="contained"

@@ -7,7 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   placeholder: string;
   onChange: (e: any) => void;
-  value?: any;
+  value: any;
 }
 
 const InputContainer = styled.div({
@@ -48,3 +48,9 @@ export const TextInput = ({
     />
   </InputContainer>
 );
+
+const defaultProps = {
+  value: "",
+};
+
+TextInput.defaultProps = defaultProps;

@@ -12,6 +12,6 @@ def get_recipe_dict(recipe):
         'name': recipe.name,
         'tag': recipe.tag.name,
         'url': recipe.url,
-        'thumbnail': get_thumbnail(recipe.thumbnail)
+        'thumbnail': recipe.thumbnail and get_thumbnail(recipe.thumbnail)
     }
     return recipe_dict
