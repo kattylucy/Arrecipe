@@ -29,6 +29,16 @@ type CreateRecipeModalProps = {
   visible: boolean;
 };
 
+interface RecipeType {
+  calories_count?: string;
+  cooking_time?: string;
+  id?: number;
+  url?: string;
+  name?: string;
+  thumbnail?: string;
+  tag?: string;
+}
+
 const Body = styled.div({
   padding: 14,
 });
@@ -55,21 +65,18 @@ export const RecipeModal = ({
   isEditing = false,
   url,
   name,
-  thumbnail,
   tag,
   closeModal,
   visible,
 }: CreateRecipeModalProps) => {
-  const [recipe, setRecipe] = useState(
-    {
-      calories_count: calories,
-      cooking_time: cookingTime,
-      id,
-      url,
-      name,
-      tag,
-    } || {}
-  );
+  const [recipe, setRecipe] = useState<RecipeType | {}>({
+    calories_count: calories,
+    cooking_time: cookingTime,
+    id: id,
+    url: url,
+    name: name,
+    tag: tag,
+  });
   const [upload, setUpload] = useState("");
   const createRecipe = useCreateRecipe();
   const updateRecipe = useUpdateRecipe();
@@ -99,8 +106,8 @@ export const RecipeModal = ({
   );
 
   const newRecipe = useCallback(async () => {
+    closeModal();
     if (isEditing) {
-      closeModal();
       toast.open({ message: "Your recipe is updating", type: "info" });
       await updateRecipe.mutateAsync({ id, recipe });
       toast.open({ message: "Recipe was updated", type: "success" });
@@ -114,6 +121,7 @@ export const RecipeModal = ({
           }
         }
         formData.append("thumbnail", upload);
+        toast.open({ message: "We are creating your recipe", type: "info" });
         await createRecipe.mutateAsync(formData);
         toast.open({ message: "Recipe was created", type: "success" });
       } catch (error) {
