@@ -69,13 +69,13 @@ export const RecipeModal = ({
   closeModal,
   visible,
 }: CreateRecipeModalProps) => {
-  const [recipe, setRecipe] = useState<RecipeType | {}>({
-    calories_count: calories,
-    cooking_time: cookingTime,
-    id: id,
-    url: url,
-    name: name,
-    tag: tag,
+  const [recipe, setRecipe] = useState<RecipeType>({
+    calories_count: calories || "",
+    cooking_time: cookingTime || "",
+    id: id || undefined,
+    url: url || "",
+    name: name || "",
+    tag: tag || "",
   });
   const [upload, setUpload] = useState("");
   const createRecipe = useCreateRecipe();
