@@ -94,6 +94,8 @@ export const FiltersBox = ({
     [createFilters, tags]
   );
 
+  console.log(caloriesCount > 0);
+
   return (
     <FiltersContainer sticky={sticky}>
       <SearchBar
@@ -107,7 +109,7 @@ export const FiltersBox = ({
           countingRange={50}
           labels={{
             label: "Kcal per serving",
-            sublabel: `${caloriesCount === 0 ? "50" : caloriesCount} Kcal`,
+            sublabel: Number(caloriesCount) > 0 ? `${caloriesCount} Kcal` : "",
           }}
           maxValue={1000}
           minValue={0}
@@ -117,7 +119,7 @@ export const FiltersBox = ({
           countingRange={5}
           labels={{
             label: "Time to prepare",
-            sublabel: `${cookingTime === 0 ? "5" : cookingTime} min`,
+            sublabel: Number(cookingTime) > 0 ? `${cookingTime} min` : "",
           }}
           maxValue={120}
           minValue={0}
