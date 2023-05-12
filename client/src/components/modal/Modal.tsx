@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import useOutsideClick from "hooks/useOutsideClick";
@@ -10,6 +11,24 @@ const defaultProps = {
   width: "30%",
 };
 
+const dropIn = {
+  hidden: {
+    width: 0,
+  },
+  visible: {
+    width: "30%",
+    transition: {
+      duration: 0.1,
+      type: "spring",
+      damping: 25,
+      stiffness: 500,
+    },
+  },
+  exit: {
+    width: 0,
+  },
+};
+
 interface ModalProps {
   closeModal: () => void;
   children: any;
@@ -19,7 +38,7 @@ interface ModalProps {
   width?: string;
 }
 
-const ModalContainer = styled.div({
+const ModalContainer = styled(motion.div)({
   backgroundColor: "rgba(0,0,0,0.5)",
   bottom: 0,
   position: "fixed",
@@ -29,25 +48,25 @@ const ModalContainer = styled.div({
   zIndex: 2,
 });
 
-const ModalBody = styled.div<{ styles: React.CSSProperties; width?: string }>(
-  ({ theme: { colors, media }, styles, width }) => ({
-    background: colors.white,
-    borderRadius: 16,
-    left: "50%",
-    position: "absolute",
-    transform: "translate(-50%, -50%)",
-    top: "50%",
-    overflow: "auto",
-    width: width,
-    "::-webkit-scrollbar": {
-      display: "none",
-    },
-    [media.tablet]: {
-      width: "90%",
-    },
-    ...styles,
-  })
-);
+const ModalBody = styled(motion.div)<{
+  styles: React.CSSProperties;
+  width?: string;
+}>(({ theme: { colors, media }, styles, width }) => ({
+  background: colors.white,
+  borderRadius: 16,
+  left: "50%",
+  position: "absolute",
+  transform: "translate(-50%, -50%)",
+  top: "50%",
+  overflow: "auto",
+  "::-webkit-scrollbar": {
+    display: "none",
+  },
+  [media.tablet]: {
+    width: "90%",
+  },
+  ...styles,
+}));
 
 const Header = styled.div(({ theme: { colors } }) => ({
   alignItems: "center",
@@ -79,8 +98,21 @@ export const Modal = ({
   if (visible) {
     return ReactDOM.createPortal(
       <>
-        <ModalContainer>
-          <ModalBody ref={ref} styles={styles} width={width}>
+        <ModalContainer
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <ModalBody
+            className="modal orange-gradient"
+            variants={dropIn}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            ref={ref}
+            styles={styles}
+            width={width}
+          >
             <Header>
               <H3>{title}</H3>
               <Button onClick={closeModal} variant="icon">
